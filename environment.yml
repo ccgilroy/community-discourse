@@ -1,0 +1,22 @@
+name: text-env
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - bs4
+  - python=3.8
+  - scikit-learn
+  - nltk
+  - spacy
+  - matplotlib
+  - numpy
+  - seaborn
+  - gensim
+  - pip
+  - jupyterlab
+  - altair
+  - pandas
+  - pyemd
+  - nodejs
+  - wikipedia
+prefix: /Users/cgilroy/miniconda3/envs/text-env
