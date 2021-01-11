@@ -1,0 +1,898 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document similarity &#8212; Community Discourse with Word Embeddings</title>
+    
+  <link rel="stylesheet" href="_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Constructing binary axes" href="binary-axes.html" />
+    <link rel="prev" title="Word similarity" href="word-similarity.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="index.html">
+  
+  
+  <h1 class="site-logo" id="site-title">Community Discourse with Word Embeddings</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="introduction.html">
+   Introduction
+  </a>
+ </li>
+</ul>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="word-similarity.html">
+   Word similarity
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Document similarity
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="binary-axes.html">
+   Binary axes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="historical-change.html">
+   Historical change
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="discussion.html">
+   Discussion
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/wmdistance.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/ccgilroy/community-discourse"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        
+        
+    </div>
+</div>
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/ccgilroy/community-discourse/main?urlpath=tree/wmdistance.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#word-mover-s-distance-and-concept-mover-s-distance">
+   Word Mover’s Distance and Concept Mover’s Distance
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#preprocess-documents">
+   Preprocess documents
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#create-concept-pseudo-document">
+   Create concept pseudo-document
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#calculate-distances">
+   Calculate distances
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#methods-notes">
+   Methods notes
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#distance-metric">
+     Distance metric
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#algorithm">
+     Algorithm
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="document-similarity">
+<h1>Document similarity<a class="headerlink" href="#document-similarity" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="word-mover-s-distance-and-concept-mover-s-distance">
+<h2>Word Mover’s Distance and Concept Mover’s Distance<a class="headerlink" href="#word-mover-s-distance-and-concept-mover-s-distance" title="Permalink to this headline">¶</a></h2>
+<p>Texts produced by social actors of interest might engage with or invoke the idea of “community” to varying degrees. Here I adapt one method for comparing or ranking texts by their degree of engagement with a concept, and I demonstrate its face validity on an obvious test case. I raise a few questions about further validation and possible alternative methods for document-level comparison.</p>
+<p>Beyond comparing words to each other, word embeddings can be used to compare entire texts. These “documents” might be sentences, paragraphs, or entire articles. One method to do this comparison is Word Mover’s Distance (WMD), which Stoltz and Taylor (2019, 2020) have extended and applied to social-scientific concepts as Concept Mover’s Distance (CMD). For CMD, the second “document” in the comparison is one word or a few words representing a “concept”, rather than a natural text.</p>
+<p>WMD is potentially useful (as Stoltz and Taylor, among others, explain) because texts can have similar meanings even when they use different words. When people write or talk about a sense of community, for instance, they won’t necessarily use the word “community” itself – they might say “belonging”, or “home”, or “togetherness” instead. Embeddings encode that underlying similarity in meaning.</p>
+<p>I need texts that are clearly about community, texts that are clearly related to community, and texts that are about something else entirely. I’ll use Wikipedia articles. The <a class="reference external" href="https://en.wikipedia.org/wiki/Community">article about “community”</a> ought to be one of the most similar to the “community” concept vector. I’d expect it to be more similar to “community” (the concept) than related articles (the <a class="reference external" href="https://en.wikipedia.org/wiki/Society">article about “society”</a>, for instance), which in turn I’d expect to be closer than articles chosen at random.</p>
+<p>Wikipedia articles are an attractive choice because they’re written in a consistent, collective voice and because they have explicit focal topics. In a way, they’re also a sort of “in-sample” test, because one set of pretrained GloVe vectors is trained primarily on Wikipedia data. (A useful extension might be to substitute the model trained on Twitter data instead. I might expect that using the Twitter model on “out-of-sample” data would produce a lower-quality or less relevant ranking.)</p>
+<p>Ranking articles by WMD / CMD by their similarity to “community” is a simple test of whether this method can be usefully applied to the case of community at all. This is something Stoltz and Taylor (2019) propose in passing, suggesting that sermons be measured for engagement with community, and then correlated with participatory outcomes like volunteering. (That view of community incidentally strikes me as aligned with Putnam’s work on social capital.) With a new method, though, I can’t take its utility for a new substantive case for granted.</p>
+<p>I also don’t want to overestimate my understanding. Translating <a class="reference external" href="https://github.com/dustinstoltz/CMDist">Stoltz and Taylor’s CMD approach</a> from R to Python for use with the gensim package confirms that I do in fact understand the method. In addition to CMDist, I rely on the <a class="reference external" href="https://radimrehurek.com/gensim/auto_examples/tutorials/run_wmd.html">gensim WMD tutorial</a>.</p>
+<p>Finally, this simple implementation points to where I still have questions. For instance, I still think paragraph vectors (also known as doc2vec) might be a useful alternative for calculating distances between documents – which is the basic WMD use case. That’s why <a class="reference external" href="https://github.com/ccgilroy/pols559-project/">I’ve used that approach in the past</a>. The major downside seems to be that you can’t use pretrained vectors with doc2vec; you have to train your own model on your own collection of documents. I’d wonder if doc2vec could be used to compare entire documents to individual words, analogously to CMD, or if it could be integrated with pretrained vectors somehow. Note that gensim (Python) has a doc2vec implementation; text2vec (R) doesn’t, which is a barrier for social scientists working in R.</p>
+<p>I’ll proceed by loading everything I need – packages, pretrained vectors, and Wikipedia articles – preprocessing the documents, and then calculating WMD/CMD in a few different ways. The main figure ranks 6 articles by how similar they are to the community concept. Some notes on the methods follow at the end.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load packages</span>
+<span class="kn">import</span> <span class="nn">gensim.downloader</span> <span class="k">as</span> <span class="nn">api</span>
+<span class="kn">import</span> <span class="nn">wikipedia</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="kn">from</span> <span class="nn">gensim.utils</span> <span class="kn">import</span> <span class="n">simple_preprocess</span>
+<span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="kn">import</span> <span class="n">stopwords</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load vectors</span>
+<span class="n">wv_wiki</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;glove-wiki-gigaword-200&#39;</span><span class="p">)</span>
+
+<span class="c1"># norm vectors</span>
+<span class="c1"># TODO: replace with .fill_norms() in gensim 4.0.0</span>
+<span class="n">wv_wiki</span><span class="o">.</span><span class="n">init_sims</span><span class="p">(</span><span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load articles</span>
+<span class="n">wikipedia</span><span class="o">.</span><span class="n">set_rate_limiting</span><span class="p">(</span><span class="n">rate_limit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wikipedia</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="s2">&quot;Community&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;A community is a social unit (a group of living things) with commonality such as norms, religion, values, customs, or identity.  Communities may share a sense of place situated in a given geographical area (e.g. a country, village, town, or neighbourhood) or in virtual space through communication platforms. Durable relations that extend beyond immediate genealogical ties also define a sense of community, important to their identity, practice, and roles in social institutions such as family, home, work, government, society, or humanity at large. Although communities are usually small relative to personal social ties, &quot;community&quot; may also refer to large group affiliations such as national communities, international communities, and virtual communities.The English-language word &quot;community&quot; derives from the Old French comuneté (currently &quot;Communauté&quot;), which comes from the Latin communitas &quot;community&quot;, &quot;public spirit&quot; (from Latin communis, &quot;common&quot;).Human communities may have intent, belief, resources, preferences, needs, and risks in common, affecting the identity of the participants and their degree of cohesiveness.&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># I wrote code a couple years ago for turning multiple Wikipedia pages</span>
+<span class="c1"># into a dataframe. I can resurrect that if I need to.</span>
+<span class="n">wiki_community</span> <span class="o">=</span> <span class="n">wikipedia</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="s2">&quot;Community&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># a related article</span>
+<span class="n">wiki_society</span> <span class="o">=</span> <span class="n">wikipedia</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="s2">&quot;Society&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># a random wikipedia article</span>
+<span class="c1"># this was the featured article on 2020-12-09</span>
+<span class="n">wiki_cleo</span> <span class="o">=</span> <span class="n">wikipedia</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="s2">&quot;Death of Cleopatra&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">wiki_cleo</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The death of Cleopatra VII, the last ruler of Ptolemaic Egypt, occurred on either 10 or 12 August, 30 BC, in Alexandria, when she was 39 years old. According to popular belief, Cleopatra killed herself by allowing an asp (Egyptian cobra) to bite her, but for Greek and Roman historians, Cleopatra poisoned herself using either a toxic ointment or by introducing the poison with a sharp implement such as a hairpin. Primary source accounts are derived mainly from the works of the ancient Roman historians Strabo, Plutarch, and Cassius Dio. Modern scholars debate the validity of ancient reports involving snakebites as the cause of death and if she was murdered or not. Some academics hypothesize that her Roman political rival Octavian forced her to kill herself in a manner of her choosing. The location of Cleopatra&#39;s tomb is unknown. It was recorded that Octavian allowed for her and her husband, the Roman politician and general Mark Antony, who stabbed himself with a sword, to be buried together properly.
+Cleopatra&#39;s death effectively ended the final war of the Roman Republic between the remaining triumvirs Octavian and Antony, in which Cleopatra aligned herself with Antony, father to three of her children. Antony and Cleopatra fled to Egypt following their loss at the 31 BC Battle of Actium in Roman Greece, after which Octavian invaded Egypt and defeated their forces. Committing suicide allowed her to avoid the humiliation of being paraded as a prisoner in a Roman triumph celebrating the military victories of Octavian, who would become Rome&#39;s first emperor in 27 BC and be known as Augustus. Octavian had Cleopatra&#39;s son Caesarion (also known as Ptolemy XV), rival heir of Julius Caesar, killed in Egypt but spared her children with Antony and brought them to Rome. Cleopatra&#39;s death marked the end of the Hellenistic period and Ptolemaic rule of Egypt, as well as the beginning of Roman Egypt, which became a province of the Roman Empire.The death of Cleopatra has been depicted in various works of art throughout history. These include the visual, literary, and performance arts, ranging from sculptures and paintings to poetry and plays, as well as modern films. Cleopatra featured prominently in the prose and poetry of ancient Latin literature. While surviving ancient Roman depictions of her death in visual arts are rare, Medieval, Renaissance, Baroque, and Modern works are numerous. Ancient Greco-Roman sculptures such as the Esquiline Venus and Sleeping Ariadne served as inspirations for later artworks portraying her death, universally involving the snakebite of an asp. Cleopatra&#39;s death has evoked themes of eroticism and sexuality, in works that include paintings, plays, and films, especially from the Victorian era. Modern works depicting Cleopatra&#39;s death include Neoclassical sculpture, Orientalist painting, and cinema.
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="preprocess-documents">
+<h2>Preprocess documents<a class="headerlink" href="#preprocess-documents" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">gensim.KeyedVectors.wmdistance</span></code> method handles removing words from the documents that aren’t in the model vocabulary, so there’s no need for me to do that.</p>
+<p>This is how Stoltz and Taylor 2019 describe their preprocessing:</p>
+<blockquote>
+<div><p>We use standard pre-processing techniques to clean the texts, which included removing stopwords, punctuation, capitalization, numbers, and non-ASCII characters. However, we do not stem or lemmatize the words as the fastText embeddings are neither stemmed nor lemmatized and doing so needlessly reduces semantic information (and without a noticeable boost in performance).</p>
+</div></blockquote>
+<p>And here’s an example from their code: <a class="reference external" href="https://github.com/dustinstoltz/concept_movers_distance_jcss/blob/master/1_cmd_bible_cleaned.R#L16">https://github.com/dustinstoltz/concept_movers_distance_jcss/blob/master/1_cmd_bible_cleaned.R#L16</a></p>
+<p>The GloVe vectors aren’t stemmed or lemmatized either, so this same preprocessing should be fine.</p>
+<p>In fact, the gensim tutorial for WMD does essentially the same preprocessing as Stoltz and Taylor:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import and download stopwords from NLTK.</span>
+<span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="kn">import</span> <span class="n">stopwords</span>
+<span class="kn">from</span> <span class="nn">nltk</span> <span class="kn">import</span> <span class="n">download</span>
+<span class="n">download</span><span class="p">(</span><span class="s1">&#39;stopwords&#39;</span><span class="p">)</span>  <span class="c1"># Download stopwords list.</span>
+<span class="n">stop_words</span> <span class="o">=</span> <span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s1">&#39;english&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">preprocess</span><span class="p">(</span><span class="n">sentence</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">w</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">sentence</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">if</span> <span class="n">w</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>gensim.utils.simple_preprocess is what I’ve used in the past: <a class="reference external" href="https://radimrehurek.com/gensim/utils.html#gensim.utils.simple_preprocess">https://radimrehurek.com/gensim/utils.html#gensim.utils.simple_preprocess</a></p>
+<p>It does most of that, but doesn’t remove stopwords. I’ve also used <code class="docutils literal notranslate"><span class="pre">gensim.parsing.preprocessing.preprocess_documents</span></code>, which does a lot more by default (including removing stopwords, but also stemming, which I don’t want).</p>
+<p><a class="reference external" href="https://radimrehurek.com/gensim/parsing/preprocessing.html">https://radimrehurek.com/gensim/parsing/preprocessing.html</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">filter_stopwords</span><span class="p">(</span><span class="n">words</span><span class="p">):</span>
+    <span class="n">stop_words</span> <span class="o">=</span> <span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s2">&quot;english&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">w</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span> <span class="k">if</span> <span class="n">w</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">preprocess</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">filter_stopwords</span><span class="p">(</span><span class="n">simple_preprocess</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> 
+                                              <span class="n">min_len</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> 
+                                              <span class="n">max_len</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> 
+                                              <span class="n">deacc</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">doc_community</span> <span class="o">=</span> <span class="n">preprocess</span><span class="p">(</span><span class="n">wiki_community</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+<span class="n">doc_society</span> <span class="o">=</span> <span class="n">preprocess</span><span class="p">(</span><span class="n">wiki_society</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+<span class="n">doc_cleo</span> <span class="o">=</span> <span class="n">preprocess</span><span class="p">(</span><span class="n">wiki_cleo</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="create-concept-pseudo-document">
+<h2>Create concept pseudo-document<a class="headerlink" href="#create-concept-pseudo-document" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">doc_concept</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;community&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="calculate-distances">
+<h2>Calculate distances<a class="headerlink" href="#calculate-distances" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wv_wiki</span><span class="o">.</span><span class="n">wmdistance</span><span class="p">(</span><span class="n">doc_community</span><span class="p">,</span> <span class="n">doc_concept</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0651109557549596
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wv_wiki</span><span class="o">.</span><span class="n">wmdistance</span><span class="p">(</span><span class="n">doc_society</span><span class="p">,</span> <span class="n">doc_concept</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.148490316050476
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wv_wiki</span><span class="o">.</span><span class="n">wmdistance</span><span class="p">(</span><span class="n">doc_cleo</span><span class="p">,</span> <span class="n">doc_concept</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.2857261839714176
+</pre></div>
+</div>
+</div>
+</div>
+<p>The ordering of these three articles is as expected, though it’s unclear whether the magnitude is interpretable. Once the vectors are normed, the values are pretty similar to the magnitudes reported in the WMD tutorial. Norming the vectors at the beginning (with <code class="docutils literal notranslate"><span class="pre">.init_sims()</span></code>) does change the scale.</p>
+<p>Because Stoltz and Taylor standardize and invert their CMD values, positive values in their paper mean closer distances, and negative values are also possible.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># hard-coded to be 0.0, the closest possible distance</span>
+<span class="n">wv_wiki</span><span class="o">.</span><span class="n">wmdistance</span><span class="p">(</span><span class="n">doc_community</span><span class="p">,</span> <span class="n">doc_community</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wv_wiki</span><span class="o">.</span><span class="n">wmdistance</span><span class="p">(</span><span class="n">doc_community</span><span class="p">,</span> <span class="n">doc_society</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7161915664722102
+</pre></div>
+</div>
+</div>
+</div>
+<p>Comparing two full documents is substantially slower than comparing a document and a one-word concept. I can see where the speed gains from faster algorithms would be worthwhile.</p>
+<p>It puzzles me a bit that the community and society articles are closer to each other than to the community concept, though I suppose that makes sense in hindsight. In fact, lots of words in a wikipedia article about a sociological concept would be general social science words, or general English words, not concept-specific or concept-related words. Put differently, it’s less effort to turn the Community wikipedia page into the Society wikipedia page, rather than into a page that just says “community community community…” over and over again. Is that a fair understanding of what WMD/CMD is doing?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># two-word concept, which yields highly similar results</span>
+<span class="n">doc_concept2</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;community&quot;</span><span class="p">,</span> <span class="s2">&quot;belonging&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wv_wiki</span><span class="o">.</span><span class="n">wmdistance</span><span class="p">(</span><span class="n">doc_community</span><span class="p">,</span> <span class="n">doc_concept2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0890325554625404
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wv_wiki</span><span class="o">.</span><span class="n">wmdistance</span><span class="p">(</span><span class="n">doc_concept</span><span class="p">,</span> <span class="n">doc_concept2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.5885887145996094
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wv_wiki</span><span class="o">.</span><span class="n">wmdistance</span><span class="p">(</span><span class="n">doc_society</span><span class="p">,</span> <span class="n">doc_concept2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.1633261491646034
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wv_wiki</span><span class="o">.</span><span class="n">wmdistance</span><span class="p">(</span><span class="n">doc_cleo</span><span class="p">,</span> <span class="n">doc_concept2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.2630806168497222
+</pre></div>
+</div>
+</div>
+</div>
+<p>As an extension, I’ll pick a few more related articles and compare those. This helps me understand what it is about community that’s getting encoded in the community vector.</p>
+<p>community in an ecological (biological) sense:
+<a class="reference external" href="https://en.wikipedia.org/wiki/Community_(ecology)">https://en.wikipedia.org/wiki/Community_(ecology)</a></p>
+<p>sense of community (psychology):
+<a class="reference external" href="https://en.wikipedia.org/wiki/Sense_of_community">https://en.wikipedia.org/wiki/Sense_of_community</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wiki_community_ecology</span> <span class="o">=</span> <span class="n">wikipedia</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="s2">&quot;Community (ecology)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wiki_sense_of_community</span> <span class="o">=</span> <span class="n">wikipedia</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="s2">&quot;Sense of community&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">doc_community_ecology</span> <span class="o">=</span> <span class="n">preprocess</span><span class="p">(</span><span class="n">wiki_community_ecology</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">doc_sense_of_community</span> <span class="o">=</span> <span class="n">preprocess</span><span class="p">(</span><span class="n">wiki_sense_of_community</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wv_wiki</span><span class="o">.</span><span class="n">wmdistance</span><span class="p">(</span><span class="n">doc_community_ecology</span><span class="p">,</span> <span class="n">doc_concept</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.194192387622505
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wv_wiki</span><span class="o">.</span><span class="n">wmdistance</span><span class="p">(</span><span class="n">doc_sense_of_community</span><span class="p">,</span> <span class="n">doc_concept</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.078757950145935
+</pre></div>
+</div>
+</div>
+</div>
+<p>The “Sense of community” article is almost as close as the “Community” article to the one-word “community” concept; the “Community (ecology)” article is further from the concept than the “Society” article.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">doc_concept3</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;local&#39;</span><span class="p">,</span> <span class="s1">&#39;community&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Wikipedia prefers the UK spelling</span>
+<span class="n">wiki_neighbourhood</span> <span class="o">=</span> <span class="n">wikipedia</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="s2">&quot;Neighbourhood&quot;</span><span class="p">)</span>
+<span class="n">doc_neighbourhood</span> <span class="o">=</span> <span class="n">preprocess</span><span class="p">(</span><span class="n">wiki_neighbourhood</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wv_wiki</span><span class="o">.</span><span class="n">wmdistance</span><span class="p">(</span><span class="n">doc_neighbourhood</span><span class="p">,</span> <span class="n">doc_concept</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.1155348441307014
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wv_wiki</span><span class="o">.</span><span class="n">wmdistance</span><span class="p">(</span><span class="n">doc_neighbourhood</span><span class="p">,</span> <span class="n">doc_concept3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0721122719869867
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wv_wiki</span><span class="o">.</span><span class="n">wmdistance</span><span class="p">(</span><span class="n">doc_community</span><span class="p">,</span> <span class="n">doc_concept3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0418642175282469
+</pre></div>
+</div>
+</div>
+</div>
+<p>Again, it’s kind of counterintuitive that “refining” the concept makes a page closer to it. Are Stoltz and Taylor using an average instead? (No, they’re not - see the binary axes notebook for more detailed notes.)</p>
+<p>To produce an overall plot of word mover’s distances, I’ll put everything into a data frame.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pages</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">wiki_community</span><span class="p">,</span> 
+    <span class="n">wiki_society</span><span class="p">,</span>
+    <span class="n">wiki_cleo</span><span class="p">,</span>
+    <span class="n">wiki_neighbourhood</span><span class="p">,</span>
+    <span class="n">wiki_sense_of_community</span><span class="p">,</span>
+    <span class="n">wiki_community_ecology</span>
+<span class="p">]</span>
+
+<span class="n">d_wiki</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;page&#39;</span><span class="p">:</span> <span class="n">pages</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d_wiki</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">title</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">d_wiki</span><span class="p">[</span><span class="s1">&#39;page&#39;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d_wiki</span><span class="p">[</span><span class="s1">&#39;doc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">preprocess</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">content</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">d_wiki</span><span class="p">[</span><span class="s1">&#39;page&#39;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d_wiki</span><span class="p">[</span><span class="s1">&#39;wmd&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">wv_wiki</span><span class="o">.</span><span class="n">wmdistance</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">doc_concept</span><span class="p">)</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">d_wiki</span><span class="p">[</span><span class="s1">&#39;doc&#39;</span><span class="p">]</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d_wiki</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;wmd&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d_wiki</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>page</th>
+      <th>title</th>
+      <th>doc</th>
+      <th>wmd</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>&lt;WikipediaPage 'Community'&gt;</td>
+      <td>Community</td>
+      <td>[community, social, unit, group, living, thing...</td>
+      <td>1.065111</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>&lt;WikipediaPage 'Sense of community'&gt;</td>
+      <td>Sense of community</td>
+      <td>[sense, community, psychological, sense, commu...</td>
+      <td>1.078758</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>&lt;WikipediaPage 'Neighbourhood'&gt;</td>
+      <td>Neighbourhood</td>
+      <td>[neighbourhood, british, english, australian, ...</td>
+      <td>1.115535</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>&lt;WikipediaPage 'Society'&gt;</td>
+      <td>Society</td>
+      <td>[society, group, individuals, involved, persis...</td>
+      <td>1.148490</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>&lt;WikipediaPage 'Community (ecology)'&gt;</td>
+      <td>Community (ecology)</td>
+      <td>[ecology, community, group, association, popul...</td>
+      <td>1.194192</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>&lt;WikipediaPage 'Death of Cleopatra'&gt;</td>
+      <td>Death of Cleopatra</td>
+      <td>[death, cleopatra, vii, last, ruler, ptolemaic...</td>
+      <td>1.285726</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># I&#39;m still learning how to make pretty plots with seaborn and matplotlib</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">rc</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;figure.dpi&quot;</span><span class="p">:</span><span class="mi">300</span><span class="p">})</span>
+<span class="c1"># sns.set_style(&quot;whitegrid&quot;)</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">catplot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;wmd&#39;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">d_wiki</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">set_axis_labels</span><span class="p">(</span><span class="s1">&#39;Distance from &quot;community&quot; concept&#39;</span><span class="p">,</span> 
+                    <span class="s1">&#39;Wikipedia article&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Word Mover&#39;s Distance&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.02</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">set_figwidth</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">set_figheight</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/wmdistance_50_0.png" src="_images/wmdistance_50_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;img/community_wmdistance.png&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The ranking here is an intuitively reasonable one – Community is the closest article, and the Death of Cleopatra, a randomly chosen article is the most distant. Among the intermediate articles, I find the ranking here consistent with what I found by investigating word similarity previously, but I can’t claim that it was entirely predictable in advance.</p>
+<p>There isn’t a clear interpretation of the magnitude, at least not without more work to investigate the distribution of WMD values and establish a well-defined baseline. It would take more comparison to know whether a distance might be thought of as small or large. My advisor suggested I might randomly generate text from some vocabulary; I’d be more inclined, at least initially, to select more actual articles at random.</p>
+<p>The distances between each of the articles might also be worth exploring. For reasons I noted above, it seems like any two articles might be closer to each other than to any one-word concept.</p>
+<p>This is really only a test of face validity. I’m unsure what would constitute a real external test of accuracy. Human ranking by Mechanical Turk workers or similar is one option, commonly used, but that would seem to foreclose the possibility of letting the embeddings tell us something counterintuitive or unexpected.</p>
+</div>
+<div class="section" id="methods-notes">
+<h2>Methods notes<a class="headerlink" href="#methods-notes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="distance-metric">
+<h3>Distance metric<a class="headerlink" href="#distance-metric" title="Permalink to this headline">¶</a></h3>
+<p>The R text2vec package used to use euclidean distance but then switched to cosine distance. I think gensim still uses euclidean distance. Stoltz and Taylor say this doesn’t matter because it produces roughly the same results. I hope so.</p>
+<p><code class="docutils literal notranslate"><span class="pre">wmdistance</span></code> confirms that the distance matrix gensim uses is Euclidean. pyemd.emd expects two normalized histograms, which gensim accomplishes with normalized bags-of-words (nBOWs).</p>
+<p>EMD:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/wmayner/pyemd">https://github.com/wmayner/pyemd</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Earth_mover%27s_distance">https://en.wikipedia.org/wiki/Earth_mover’s_distance</a></p></li>
+</ul>
+</div>
+<div class="section" id="algorithm">
+<h3>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h3>
+<p>The CMD algorithm is now “Linear-Complexity Relaxed Word Mover’s Distance” rather than “Relaxed Word Mover’s Distance”. Again, this probably shouldn’t matter, but it’s good to know what’s going on. I’m unsure what algorithm gensim uses, but it should be here: <a class="reference external" href="https://github.com/RaRe-Technologies/gensim/blob/develop/gensim/models/keyedvectors.py#L842">https://github.com/RaRe-Technologies/gensim/blob/develop/gensim/models/keyedvectors.py#L842</a></p>
+<p>(Oddly enough, and in contrast to the README, code comments suggest RWMD vs LC-RWMD <em>does</em> matter: <a class="reference external" href="https://github.com/dustinstoltz/CMDist/blob/master/R/kusnerRWMD.R">https://github.com/dustinstoltz/CMDist/blob/master/R/kusnerRWMD.R</a>. Maintaining consistent documentation is <em>hard</em>.)</p>
+<p>Because gemsim just calls <code class="docutils literal notranslate"><span class="pre">pyemd.emd</span></code> which wraps the C implementation of the 2009 paper, I think the algorithm is just WMD, not any relaxed version, though there’s some sort of speed improvement in that paper over previous EMD algorithms. This is all way out of my league in computer-science land.</p>
+<p>All that to say, hopefully none of these code/math details matter! But the divergence between text2vec and gensim based on which papers they’re implementing is kind of fascinating. It seems like text2vec is more current, which comes as a surprise to me. (It also makes me wonder which is ultimately faster in practice, if Python is generally faster than R.)</p>
+<p>An advantage of CMDist / text2vec seems to be that you can just plug in a document-term matrix. gensim seems to expect individual documents instead, and it constructs a vocabulary matrix each time. (Is using a dtm actually more efficient speed-wise or memory-wise, or just more convenient?)</p>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="word-similarity.html" title="previous page">Word similarity</a>
+    <a class='right-next' id="next-link" href="binary-axes.html" title="next page">Constructing binary axes</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Connor Gilroy<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+  </body>
+</html>

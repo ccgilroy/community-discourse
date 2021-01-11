@@ -1,0 +1,1068 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Word similarity &#8212; Community Discourse with Word Embeddings</title>
+    
+  <link rel="stylesheet" href="_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Document similarity" href="wmdistance.html" />
+    <link rel="prev" title="Introduction" href="introduction.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="index.html">
+  
+  
+  <h1 class="site-logo" id="site-title">Community Discourse with Word Embeddings</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="introduction.html">
+   Introduction
+  </a>
+ </li>
+</ul>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Word similarity
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wmdistance.html">
+   Document similarity
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="binary-axes.html">
+   Binary axes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="historical-change.html">
+   Historical change
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="discussion.html">
+   Discussion
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/word-similarity.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/ccgilroy/community-discourse"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        
+        
+    </div>
+</div>
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/ccgilroy/community-discourse/main?urlpath=tree/word-similarity.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#comparing-pretrained-vectors">
+   Comparing pretrained vectors
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#glove-twitter">
+     GloVe - twitter
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#glove-wikipedia-2014-gigaword-5">
+     GloVe - wikipedia 2014 + gigaword 5
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#glove-common-crawl">
+     GloVe - common crawl
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#word2vec-google-news">
+     word2vec - google news
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#notes-on-packages">
+   Notes on packages
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-packages-and-models">
+   Load packages and models
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#subset-to-common-vocabulary">
+   Subset to common vocabulary
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-words-are-most-similar-to-community">
+   What words are most similar to “community”?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#dimensionality-reduction">
+   Dimensionality reduction
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#correlation-across-models">
+   Correlation across models
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="word-similarity">
+<h1>Word similarity<a class="headerlink" href="#word-similarity" title="Permalink to this headline">¶</a></h1>
+<p>Community is an <a class="reference external" href="https://ccgilroy.github.io/gilroy-reading-list/rationale.html#narrative-rationale">ambiguous sociological concept</a>. “Community” can index moral unity, an emotional sense of togetherness, common interests, interactional social density, or geographic proximity, and I doubt that list is exhaustive.</p>
+<p>Word embeddings provide one way to investigate the meaning of community in natural language. If a general initial investigation reveals something robust and interesting, then that could motivate applying word embeddings to specific data sets of analytic interest, and suggest which approaches might be the most productive.</p>
+<p>Word embeddings encode meaning relationally. This makes embeddings useful for assessing the similarity between words. Querying a model for which words are most similar to a target word is a starting point for assessing what that target word means in the context of the model.</p>
+<p>At the same time, word embeddings aren’t necessarily stable (<a class="reference external" href="https://mimno.infosci.cornell.edu/papers/antoniak-stability.pdf">Antoniak and Mimno 2018</a>, Rodriguez and Spirling 2020). And embeddings trained on different data sources might encode biases or particularities – which could be a nuisance we’d want to mitigate, or which could themselves be the object of investigation.</p>
+<p>When working with embeddings for social-scientific ends, a major analytic choice is whether to use pretrained embeddings or to train a new model on a local data source (Rodriguez and Spirling 2020, Stoltz and Taylor 2020). Generally, social scientists who have worked with word embeddings recommend starting with pretrained models, and I perceive them to be optimistic overall about the applicability of those pretrained models to specific local contexts. Because of that, I’ll start here by examining a few pretrained models, rather than seeking out a relevant corpus to train my own model on. I’ll compare two pretrained GloVe models – one based on Wikipedia, and one based on Twitter – and describe a few others I considered.</p>
+<div class="section" id="comparing-pretrained-vectors">
+<h2>Comparing pretrained vectors<a class="headerlink" href="#comparing-pretrained-vectors" title="Permalink to this headline">¶</a></h2>
+<p>The gensim package distributes versions of pretrained models through gensim-data: <a class="reference external" href="https://github.com/RaRe-Technologies/gensim-data">https://github.com/RaRe-Technologies/gensim-data</a></p>
+<p><a class="reference external" href="https://rare-technologies.com/new-download-api-for-pretrained-nlp-models-and-datasets-in-gensim/">https://rare-technologies.com/new-download-api-for-pretrained-nlp-models-and-datasets-in-gensim/</a></p>
+<p>If a model exists there, this is more convenient than finding and loading it from the original source (which is often idiosyncratic research code). The original source for the GloVe models is <a class="reference external" href="https://nlp.stanford.edu/projects/glove/">https://nlp.stanford.edu/projects/glove/</a></p>
+<div class="section" id="glove-twitter">
+<h3>GloVe - twitter<a class="headerlink" href="#glove-twitter" title="Permalink to this headline">¶</a></h3>
+<p>In gensim-data. Year unspecified.</p>
+</div>
+<div class="section" id="glove-wikipedia-2014-gigaword-5">
+<h3>GloVe - wikipedia 2014 + gigaword 5<a class="headerlink" href="#glove-wikipedia-2014-gigaword-5" title="Permalink to this headline">¶</a></h3>
+<p>In gensim-data. Gigaword is a newswire corpus: <a class="reference external" href="https://catalog.ldc.upenn.edu/LDC2011T07">https://catalog.ldc.upenn.edu/LDC2011T07</a></p>
+<p>I’ll refer to these as the “wikipedia” vectors as a shorthand, but that’s not <em>all</em> of the training data! Social scientists might prefer models trained on a single data source for consistency, but NLP practitioners seem to prefer the better performance they get from using more data.</p>
+</div>
+<div class="section" id="glove-common-crawl">
+<h3>GloVe - common crawl<a class="headerlink" href="#glove-common-crawl" title="Permalink to this headline">¶</a></h3>
+<p>There’s a third data set used to produce pretrained GloVe vectors - the common crawl of internet data. This isn’t packaged in gensim-data, but it is the source of the English model vectors in the spaCy package: <a class="reference external" href="https://spacy.io/models/en">https://spacy.io/models/en</a></p>
+<p>spaCy models can also be loaded in whatlies, and I’ve explored this in a previous iteration of this notebook. It was interesting, but I’ll leave it aside for simplicity’s sake.</p>
+</div>
+<div class="section" id="word2vec-google-news">
+<h3>word2vec - google news<a class="headerlink" href="#word2vec-google-news" title="Permalink to this headline">¶</a></h3>
+<p>In gensim-data. These vectors are very large and memory-intensive. The large “vocabulary” includes many spelling variants, and so it wasn’t that helpful in my initial exploration. I don’t cover it here. Original source: <a class="reference external" href="https://code.google.com/archive/p/word2vec/">https://code.google.com/archive/p/word2vec/</a></p>
+</div>
+</div>
+<div class="section" id="notes-on-packages">
+<h2>Notes on packages<a class="headerlink" href="#notes-on-packages" title="Permalink to this headline">¶</a></h2>
+<p>A word embeddings model is a vocabulary list (“keys”) and a matrix of vectors for each word in the vocabulary. But different Python packages have different interfaces for performing operations using the model, and they can be more or less convenient for particular tasks. Learning multiple object APIs is a recipe for confusion, but sometimes a method just isn’t available.</p>
+<p><strong>gensim</strong> is the standard python package for training word2vec models, and it’s a good package for working with GloVe embeddings as well.</p>
+<p><strong>whatlies</strong> is a newer package from an NLP company called Rasa (Warmerdam, Kober and Tatman 2020). It’s meant to facilitate visualization and comparison within and across different models. The API is a bit more abstract, which can be really nice when it works.</p>
+<p>I’ll switch between the two packages depending on the task, though I found whatlies particularly convenient for this notebook.</p>
+</div>
+<div class="section" id="load-packages-and-models">
+<h2>Load packages and models<a class="headerlink" href="#load-packages-and-models" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load packages</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">gensim.downloader</span> <span class="k">as</span> <span class="nn">api</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="kn">from</span> <span class="nn">whatlies</span> <span class="kn">import</span> <span class="n">Embedding</span><span class="p">,</span> <span class="n">EmbeddingSet</span>
+<span class="kn">from</span> <span class="nn">whatlies.transformers</span> <span class="kn">import</span> <span class="n">Pca</span>
+<span class="c1"># from whatlies.language import GensimLanguage, SpacyLanguage</span>
+
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load models</span>
+<span class="c1"># load gensim vectors (as KeyedVectors)</span>
+<span class="n">wv_wiki</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;glove-wiki-gigaword-200&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s2">&quot;glove-wiki-gigaword-200.kv&quot;</span><span class="p">):</span>
+    <span class="n">wv_wiki</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;glove-wiki-gigaword-200.kv&quot;</span><span class="p">)</span>
+    
+<span class="n">wv_twitter</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;glove-twitter-200&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s2">&quot;glove-twitter-200.kv&quot;</span><span class="p">):</span>
+    <span class="n">wv_twitter</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;glove-twitter-200.kv&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="subset-to-common-vocabulary">
+<h2>Subset to common vocabulary<a class="headerlink" href="#subset-to-common-vocabulary" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Wiki vocab: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">wv_wiki</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">keys</span><span class="p">())))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Twitter vocab: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">wv_twitter</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">keys</span><span class="p">())))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Wiki vocab: 400000
+Twitter vocab: 1193514
+</pre></div>
+</div>
+</div>
+</div>
+<p>The Wikipedia model’s vocabular is capped at 400K words; the Twitter vocabulary is much larger. Given how many words are in common usage in English, both vocabularies likely include many rare or idiosyncratic terms.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load vectors as whatlies EmbeddingSet</span>
+<span class="n">emb_wiki</span> <span class="o">=</span> <span class="n">EmbeddingSet</span><span class="o">.</span><span class="n">from_names_X</span><span class="p">(</span><span class="n">names</span><span class="o">=</span><span class="n">wv_wiki</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> 
+                                     <span class="n">X</span><span class="o">=</span><span class="n">wv_wiki</span><span class="o">.</span><span class="n">vectors</span><span class="p">)</span>
+<span class="n">emb_twitter</span> <span class="o">=</span> <span class="n">EmbeddingSet</span><span class="o">.</span><span class="n">from_names_X</span><span class="p">(</span><span class="n">names</span><span class="o">=</span><span class="n">wv_twitter</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>
+                                       <span class="n">X</span> <span class="o">=</span> <span class="n">wv_twitter</span><span class="o">.</span><span class="n">vectors</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># subset vocabulary</span>
+<span class="n">vocab_wiki</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">wv_wiki</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="n">vocab_twitter</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">wv_twitter</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="n">common_vocab</span> <span class="o">=</span> <span class="n">vocab_wiki</span> <span class="o">&amp;</span> <span class="n">vocab_twitter</span> <span class="c1"># intersection</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">common_vocab</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>150396
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># other set operations:</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">vocab_wiki</span> <span class="o">|</span> <span class="n">vocab_twitter</span><span class="p">)</span> <span class="c1"># union </span>
+<span class="nb">len</span><span class="p">(</span><span class="n">vocab_wiki</span> <span class="o">-</span> <span class="n">vocab_twitter</span><span class="p">)</span> <span class="c1"># difference</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">vocab_twitter</span> <span class="o">-</span> <span class="n">vocab_wiki</span><span class="p">)</span> <span class="c1"># the other difference</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1043118
+</pre></div>
+</div>
+</div>
+</div>
+<p>These set operations are based on this gist: <a class="reference external" href="https://gist.github.com/quadrismegistus/09a93e219a6ffc4f216fb85235535faf#file-gensim_word2vec_procrustes_align-py-L36">https://gist.github.com/quadrismegistus/09a93e219a6ffc4f216fb85235535faf#file-gensim_word2vec_procrustes_align-py-L36</a></p>
+<p>It’s kind of interesting to look at what words are absent from one vocabulary or the other. Most are obscure, proper names, etc, but what about words like “indelicate” or “presuppose” or “assailed”? (A few words in the wiki vocab but not the twitter vocab.)</p>
+<p>A fair amount of the twitter vocab missing from the wiki vocab is … not actually English. (e.g. ‘想像しただけで’ ~ “just by having imagined”, ‘覚えておいてね’ ~ “remember it, okay”, or even the whole sentence ‘古いアップルファンとしては６色カラーにある種のノスタルジーを感じずにはいられません’). Do those come from tweets that mixed languages? Or is language classification just not very precise?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># being able to do this is nice! thanks, whatlies</span>
+<span class="n">emb_wiki_sub</span> <span class="o">=</span> <span class="n">emb_wiki</span><span class="p">[</span><span class="n">common_vocab</span><span class="p">]</span>
+<span class="n">emb_twitter_sub</span> <span class="o">=</span> <span class="n">emb_twitter</span><span class="p">[</span><span class="n">common_vocab</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="what-words-are-most-similar-to-community">
+<h2>What words are most similar to “community”?<a class="headerlink" href="#what-words-are-most-similar-to-community" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># list similar words</span>
+<span class="n">emb_wiki_sub</span><span class="o">.</span><span class="n">score_similar</span><span class="p">(</span><span class="s2">&quot;community&quot;</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(Emb[community], 0.0),
+ (Emb[communities], 0.18838828802108765),
+ (Emb[organizations], 0.3966641426086426),
+ (Emb[society], 0.40596723556518555),
+ (Emb[local], 0.4114809036254883),
+ (Emb[established], 0.4117661118507385),
+ (Emb[area], 0.4153445363044739),
+ (Emb[part], 0.42497074604034424),
+ (Emb[within], 0.4256446957588196),
+ (Emb[public], 0.42661720514297485)]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">emb_twitter_sub</span><span class="o">.</span><span class="n">score_similar</span><span class="p">(</span><span class="s2">&quot;community&quot;</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(Emb[community], 1.1920928955078125e-07),
+ (Emb[youth], 0.31809890270233154),
+ (Emb[development], 0.3404795527458191),
+ (Emb[communities], 0.3463841676712036),
+ (Emb[culture], 0.36351752281188965),
+ (Emb[forum], 0.3643679618835449),
+ (Emb[center], 0.36664193868637085),
+ (Emb[social], 0.3729069232940674),
+ (Emb[organization], 0.3769025206565857),
+ (Emb[arts], 0.37739789485931396)]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The metric returned here is cosine <em>distance</em> (so smaller = more similar).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot similar words (heatmap)</span>
+<span class="n">emb_wiki_sub</span><span class="o">.</span><span class="n">embset_similar</span><span class="p">(</span><span class="s1">&#39;community&#39;</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">plot_similarity</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/word-similarity_19_0.png" src="_images/word-similarity_19_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">emb_twitter_sub</span>
+ <span class="o">.</span><span class="n">embset_similar</span><span class="p">(</span><span class="s2">&quot;community&quot;</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;cosine&quot;</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">plot_similarity</span><span class="p">(</span><span class="n">metric</span><span class="o">=</span><span class="s2">&quot;cosine&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/word-similarity_20_0.png" src="_images/word-similarity_20_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="dimensionality-reduction">
+<h2>Dimensionality reduction<a class="headerlink" href="#dimensionality-reduction" title="Permalink to this headline">¶</a></h2>
+<p>What variation exists <em>within</em> the local neighborhood of the vector space around “community”?</p>
+<p>Dimensionality reduction methods are one way to explore this local variation. The whatlies package has a set of transformers, borrowed from scikit-learn, that make this easy, including PCA, UMAP, and t-SNE.</p>
+<p>I’ll start with PCA, which is relatively straightforward and familiar to social scientists. I’ll plot the first two principal components for the vectors of the 100 embeddings closest to community (by cosine similarity). This isn’t PCA for the <em>whole</em> set of vectors; it’s meant to highlight the variation in a set of vectors that are already similar to each other.</p>
+<p>TODO:</p>
+<ul class="simple">
+<li><p>show % of variation explained by each component</p></li>
+<li><p>actually cluster the words in the local neighborhood, rather than looking for visual separation</p></li>
+<li><p>find a more systematic way of defining the cutoff for nearest neighbors, or at least do a sensitivity analysis for N</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># get 100 most similar words</span>
+<span class="n">wiki_com100</span> <span class="o">=</span> <span class="n">emb_wiki_sub</span><span class="o">.</span><span class="n">embset_similar</span><span class="p">(</span><span class="s2">&quot;community&quot;</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;cosine&#39;</span><span class="p">)</span>
+<span class="n">twitter_com100</span> <span class="o">=</span> <span class="n">emb_twitter_sub</span><span class="o">.</span><span class="n">embset_similar</span><span class="p">(</span><span class="s2">&quot;community&quot;</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;cosine&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wiki_com100</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">Pca</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">plot_interactive</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<div id="altair-viz-bb4b4616623a43fab398a21ec9d0a83e"></div>
+<script type="text/javascript">
+  (function(spec, embedOpt){
+    let outputDiv = document.currentScript.previousElementSibling;
+    if (outputDiv.id !== "altair-viz-bb4b4616623a43fab398a21ec9d0a83e") {
+      outputDiv = document.getElementById("altair-viz-bb4b4616623a43fab398a21ec9d0a83e");
+    }
+    const paths = {
+      "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
+      "vega-lib": "https://cdn.jsdelivr.net/npm//vega-lib?noext",
+      "vega-lite": "https://cdn.jsdelivr.net/npm//vega-lite@4.8.1?noext",
+      "vega-embed": "https://cdn.jsdelivr.net/npm//vega-embed@6?noext",
+    };
+
+    function loadScript(lib) {
+      return new Promise(function(resolve, reject) {
+        var s = document.createElement('script');
+        s.src = paths[lib];
+        s.async = true;
+        s.onload = () => resolve(paths[lib]);
+        s.onerror = () => reject(`Error loading script: ${paths[lib]}`);
+        document.getElementsByTagName("head")[0].appendChild(s);
+      });
+    }
+
+    function showError(err) {
+      outputDiv.innerHTML = `<div class="error" style="color:red;">${err}</div>`;
+      throw err;
+    }
+
+    function displayChart(vegaEmbed) {
+      vegaEmbed(outputDiv, spec, embedOpt)
+        .catch(err => showError(`Javascript Error: ${err.message}<br>This usually means there's a typo in your chart specification. See the javascript console for the full traceback.`));
+    }
+
+    if(typeof define === "function" && define.amd) {
+      requirejs.config({paths});
+      require(["vega-embed"], displayChart, err => showError(`Error loading script: ${err.message}`));
+    } else if (typeof vegaEmbed === "function") {
+      displayChart(vegaEmbed);
+    } else {
+      loadScript("vega")
+        .then(() => loadScript("vega-lite"))
+        .then(() => loadScript("vega-embed"))
+        .catch(showError)
+        .then(() => displayChart(vegaEmbed));
+    }
+  })({"config": {"view": {"continuousWidth": 400, "continuousHeight": 300}}, "layer": [{"mark": {"type": "circle", "size": 60}, "encoding": {"color": {"type": "nominal", "field": "", "legend": null}, "tooltip": [{"type": "nominal", "field": "name"}, {"type": "nominal", "field": "original"}], "x": {"type": "quantitative", "axis": {"title": "Dimension 0"}, "field": "x_axis"}, "y": {"type": "quantitative", "axis": {"title": "Dimension 1"}, "field": "y_axis"}}, "selection": {"selector001": {"type": "interval", "bind": "scales", "encodings": ["x", "y"]}}, "title": "Dimension 0 vs. Dimension 1"}, {"mark": {"type": "text", "color": "black", "dx": -15, "dy": 3}, "encoding": {"text": {"type": "nominal", "field": "original"}, "x": {"type": "quantitative", "field": "x_axis"}, "y": {"type": "quantitative", "field": "y_axis"}}}], "data": {"name": "data-4f2644b8131adaf209fa32941b662035"}, "$schema": "https://vega.github.io/schema/vega-lite/v4.8.1.json", "datasets": {"data-4f2644b8131adaf209fa32941b662035": [{"x_axis": 0.23485194146633148, "y_axis": 1.4878822565078735, "name": "community", "original": "community"}, {"x_axis": -0.49427148699760437, "y_axis": 1.5235087871551514, "name": "communities", "original": "communities"}, {"x_axis": 3.2381551265716553, "y_axis": 0.5318028926849365, "name": "organizations", "original": "organizations"}, {"x_axis": 1.6688909530639648, "y_axis": 0.2621225416660309, "name": "society", "original": "society"}, {"x_axis": -0.1211526095867157, "y_axis": 0.33766016364097595, "name": "local", "original": "local"}, {"x_axis": 0.7110544443130493, "y_axis": 0.7843484282493591, "name": "established", "original": "established"}, {"x_axis": -2.543543815612793, "y_axis": 0.8300005793571472, "name": "area", "original": "area"}, {"x_axis": -0.9058876633644104, "y_axis": -0.8044770359992981, "name": "part", "original": "part"}, {"x_axis": -0.6147088408470154, "y_axis": -0.3613261878490448, "name": "within", "original": "within"}, {"x_axis": 0.639458954334259, "y_axis": -0.17819426953792572, "name": "public", "original": "public"}, {"x_axis": 1.0014361143112183, "y_axis": 0.18394578993320465, "name": "council", "original": "council"}, {"x_axis": -2.4181439876556396, "y_axis": 1.000586748123169, "name": "residents", "original": "residents"}, {"x_axis": -2.160748243331909, "y_axis": 2.375676393508911, "name": "neighborhood", "original": "neighborhood"}, {"x_axis": 0.22854316234588623, "y_axis": 1.940795660018921, "name": "schools", "original": "schools"}, {"x_axis": 2.8807780742645264, "y_axis": 0.11843644082546234, "name": "organization", "original": "organization"}, {"x_axis": 1.3020724058151245, "y_axis": -1.581209659576416, "name": "support", "original": "support"}, {"x_axis": 2.3651978969573975, "y_axis": 1.9775454998016357, "name": "educational", "original": "educational"}, {"x_axis": -1.864650845527649, "y_axis": 0.7874104380607605, "name": "population", "original": "population"}, {"x_axis": 1.0048542022705078, "y_axis": -0.0010578823275864124, "name": "development", "original": "development"}, {"x_axis": 2.159982204437256, "y_axis": 1.8851536512374878, "name": "outreach", "original": "outreach"}, {"x_axis": -0.7660472393035889, "y_axis": -1.775069236755371, "name": "country", "original": "country"}, {"x_axis": -1.1428229808807373, "y_axis": -1.2463579177856445, "name": "people", "original": "people"}, {"x_axis": -0.46769142150878906, "y_axis": -1.5133882761001587, "name": "well", "original": "well"}, {"x_axis": 1.659264326095581, "y_axis": 1.4590712785720825, "name": "education", "original": "education"}, {"x_axis": 0.14033019542694092, "y_axis": -0.25507640838623047, "name": "citizens", "original": "citizens"}, {"x_axis": 0.7084916830062866, "y_axis": 0.15338607132434845, "name": "regional", "original": "regional"}, {"x_axis": 1.0994065999984741, "y_axis": -1.6771100759506226, "name": "efforts", "original": "efforts"}, {"x_axis": -0.9936501979827881, "y_axis": 0.2723064124584198, "name": "families", "original": "families"}, {"x_axis": -0.7339288592338562, "y_axis": -1.5041213035583496, "name": "many", "original": "many"}, {"x_axis": 0.5252645611763, "y_axis": -1.3486231565475464, "name": "needs", "original": "needs"}, {"x_axis": 1.0740114450454712, "y_axis": -1.607476830482483, "name": "leaders", "original": "leaders"}, {"x_axis": -0.982710599899292, "y_axis": -1.2127398252487183, "name": "is", "original": "is"}, {"x_axis": 0.14498355984687805, "y_axis": 1.2721726894378662, "name": "jewish", "original": "jewish"}, {"x_axis": -1.9598604440689087, "y_axis": -0.6071498990058899, "name": "where", "original": "where"}, {"x_axis": -3.2244911193847656, "y_axis": 2.5843000411987305, "name": "village", "original": "village"}, {"x_axis": 1.945919156074524, "y_axis": -0.019427049905061722, "name": "social", "original": "social"}, {"x_axis": 1.972415566444397, "y_axis": 0.3933906555175781, "name": "institutions", "original": "institutions"}, {"x_axis": 0.10920864343643188, "y_axis": -1.4553180932998657, "name": "united", "original": "united"}, {"x_axis": -0.013401567004621029, "y_axis": -1.4533928632736206, "name": "nation", "original": "nation"}, {"x_axis": -0.35178712010383606, "y_axis": 1.3286484479904175, "name": "church", "original": "church"}, {"x_axis": -1.7523009777069092, "y_axis": 0.14350488781929016, "name": "areas", "original": "areas"}, {"x_axis": -1.278444528579712, "y_axis": -0.024875370785593987, "name": "small", "original": "small"}, {"x_axis": -0.7050480246543884, "y_axis": 2.012930154800415, "name": "school", "original": "school"}, {"x_axis": -0.9794511795043945, "y_axis": -1.407265305519104, "name": "now", "original": "now"}, {"x_axis": -0.50103759765625, "y_axis": 2.3643460273742676, "name": "campus", "original": "campus"}, {"x_axis": -0.39822468161582947, "y_axis": -1.8398551940917969, "name": "has", "original": "has"}, {"x_axis": -0.3729759454727173, "y_axis": -1.251629114151001, "name": "growing", "original": "growing"}, {"x_axis": -0.2843671441078186, "y_axis": 1.6979175806045532, "name": "serves", "original": "serves"}, {"x_axis": 0.5963820815086365, "y_axis": -1.5700827836990356, "name": "concerned", "original": "concerned"}, {"x_axis": 1.2183983325958252, "y_axis": 1.8315459489822388, "name": "founded", "original": "founded"}, {"x_axis": -0.23194333910942078, "y_axis": 0.36294370889663696, "name": "primarily", "original": "primarily"}, {"x_axis": 1.6025376319885254, "y_axis": 0.7959612607955933, "name": "cultural", "original": "cultural"}, {"x_axis": 1.7230104207992554, "y_axis": -0.12290482968091965, "name": "initiative", "original": "initiative"}, {"x_axis": 3.061460018157959, "y_axis": 2.4704363346099854, "name": "nonprofit", "original": "nonprofit"}, {"x_axis": 1.5868853330612183, "y_axis": -0.4837474226951599, "name": "groups", "original": "groups"}, {"x_axis": 0.730989933013916, "y_axis": -0.9170901775360107, "name": "members", "original": "members"}, {"x_axis": 0.4258078336715698, "y_axis": 0.14277860522270203, "name": "culture", "original": "culture"}, {"x_axis": 3.093479633331299, "y_axis": 0.6991220116615295, "name": "organisations", "original": "organisations"}, {"x_axis": 1.378173589706421, "y_axis": 1.0066571235656738, "name": "youth", "original": "youth"}, {"x_axis": -0.3574708104133606, "y_axis": -1.6019437313079834, "name": "also", "original": "also"}, {"x_axis": -0.615196943283081, "y_axis": -1.445056438446045, "name": "which", "original": "which"}, {"x_axis": 0.11664064973592758, "y_axis": -1.2066256999969482, "name": "particular", "original": "particular"}, {"x_axis": 1.4336786270141602, "y_axis": 0.47498634457588196, "name": "religious", "original": "religious"}, {"x_axis": -0.749640703201294, "y_axis": -1.5813851356506348, "name": "the", "original": "the"}, {"x_axis": 1.2964770793914795, "y_axis": 0.2842687964439392, "name": "establishment", "original": "establishment"}, {"x_axis": -0.225693017244339, "y_axis": -1.664214849472046, "name": "both", "original": "both"}, {"x_axis": -0.46559053659439087, "y_axis": 0.0761609673500061, "name": "parents", "original": "parents"}, {"x_axis": 1.076947569847107, "y_axis": -0.10891541093587875, "name": "recognized", "original": "recognized"}, {"x_axis": 1.748934268951416, "y_axis": -0.8381022810935974, "name": "leadership", "original": "leadership"}, {"x_axis": 0.12481040507555008, "y_axis": 1.0095677375793457, "name": "students", "original": "students"}, {"x_axis": -2.064572811126709, "y_axis": 0.09433681517839432, "name": "east", "original": "east"}, {"x_axis": 0.23921814560890198, "y_axis": -1.5211193561553955, "name": "important", "original": "important"}, {"x_axis": -1.1077525615692139, "y_axis": -0.3287353515625, "name": "across", "original": "across"}, {"x_axis": 0.038306377828121185, "y_axis": -1.7421797513961792, "name": "hope", "original": "hope"}, {"x_axis": -0.5927774310112, "y_axis": -1.4209692478179932, "name": "especially", "original": "especially"}, {"x_axis": -0.01437588594853878, "y_axis": 0.9188799262046814, "name": "center", "original": "center"}, {"x_axis": 0.059215277433395386, "y_axis": -0.9570567011833191, "name": "working", "original": "working"}, {"x_axis": 1.8037757873535156, "y_axis": 1.478054404258728, "name": "civic", "original": "civic"}, {"x_axis": -3.4023568630218506, "y_axis": 1.638930082321167, "name": "town", "original": "town"}, {"x_axis": -2.1931843757629395, "y_axis": 1.903113842010498, "name": "neighborhoods", "original": "neighborhoods"}, {"x_axis": -1.2388805150985718, "y_axis": -0.42865896224975586, "name": "western", "original": "western"}, {"x_axis": 2.0474367141723633, "y_axis": -1.488718867301941, "name": "international", "original": "international"}, {"x_axis": -0.030420688912272453, "y_axis": -0.9698037505149841, "name": "called", "original": "called"}, {"x_axis": -1.4539165496826172, "y_axis": -0.3276274800300598, "name": "lives", "original": "lives"}, {"x_axis": -1.4715913534164429, "y_axis": -0.856735110282898, "name": "in", "original": "in"}, {"x_axis": 0.28286227583885193, "y_axis": -1.7872672080993652, "name": "help", "original": "help"}, {"x_axis": -1.9425207376480103, "y_axis": -0.4312931001186371, "name": "home", "original": "home"}, {"x_axis": -1.447548747062683, "y_axis": 1.1703509092330933, "name": "predominantly", "original": "predominantly"}, {"x_axis": 0.1830267459154129, "y_axis": -2.391170024871826, "name": "should", "original": "should"}, {"x_axis": -2.123779535293579, "y_axis": 2.186398983001709, "name": "rural", "original": "rural"}, {"x_axis": -2.4869422912597656, "y_axis": 2.4071576595306396, "name": "located", "original": "located"}, {"x_axis": -0.48974859714508057, "y_axis": -1.3802337646484375, "name": "today", "original": "today"}, {"x_axis": -2.790620803833008, "y_axis": 2.3107492923736572, "name": "county", "original": "county"}, {"x_axis": -0.048050202429294586, "y_axis": -1.4663662910461426, "name": "among", "original": "among"}, {"x_axis": -0.018609685823321342, "y_axis": -0.6338467001914978, "name": "greater", "original": "greater"}, {"x_axis": -0.804570198059082, "y_axis": -1.3977766036987305, "name": ".", "original": "."}, {"x_axis": -0.5176492929458618, "y_axis": -2.0780935287475586, "name": "all", "original": "all"}, {"x_axis": 1.8078707456588745, "y_axis": 0.47407305240631104, "name": "association", "original": "association"}, {"x_axis": 3.552513837814331, "y_axis": 3.271801710128784, "name": "non-profit", "original": "non-profit"}, {"x_axis": -1.1266578435897827, "y_axis": -0.4442650079727173, "name": "middle", "original": "middle"}]}}, {"mode": "vega-lite"});
+</script></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">twitter_com100</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">Pca</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">plot_interactive</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<div id="altair-viz-3732c4e7de574f0eb6e29e58820071d4"></div>
+<script type="text/javascript">
+  (function(spec, embedOpt){
+    let outputDiv = document.currentScript.previousElementSibling;
+    if (outputDiv.id !== "altair-viz-3732c4e7de574f0eb6e29e58820071d4") {
+      outputDiv = document.getElementById("altair-viz-3732c4e7de574f0eb6e29e58820071d4");
+    }
+    const paths = {
+      "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
+      "vega-lib": "https://cdn.jsdelivr.net/npm//vega-lib?noext",
+      "vega-lite": "https://cdn.jsdelivr.net/npm//vega-lite@4.8.1?noext",
+      "vega-embed": "https://cdn.jsdelivr.net/npm//vega-embed@6?noext",
+    };
+
+    function loadScript(lib) {
+      return new Promise(function(resolve, reject) {
+        var s = document.createElement('script');
+        s.src = paths[lib];
+        s.async = true;
+        s.onload = () => resolve(paths[lib]);
+        s.onerror = () => reject(`Error loading script: ${paths[lib]}`);
+        document.getElementsByTagName("head")[0].appendChild(s);
+      });
+    }
+
+    function showError(err) {
+      outputDiv.innerHTML = `<div class="error" style="color:red;">${err}</div>`;
+      throw err;
+    }
+
+    function displayChart(vegaEmbed) {
+      vegaEmbed(outputDiv, spec, embedOpt)
+        .catch(err => showError(`Javascript Error: ${err.message}<br>This usually means there's a typo in your chart specification. See the javascript console for the full traceback.`));
+    }
+
+    if(typeof define === "function" && define.amd) {
+      requirejs.config({paths});
+      require(["vega-embed"], displayChart, err => showError(`Error loading script: ${err.message}`));
+    } else if (typeof vegaEmbed === "function") {
+      displayChart(vegaEmbed);
+    } else {
+      loadScript("vega")
+        .then(() => loadScript("vega-lite"))
+        .then(() => loadScript("vega-embed"))
+        .catch(showError)
+        .then(() => displayChart(vegaEmbed));
+    }
+  })({"config": {"view": {"continuousWidth": 400, "continuousHeight": 300}}, "layer": [{"mark": {"type": "circle", "size": 60}, "encoding": {"color": {"type": "nominal", "field": "", "legend": null}, "tooltip": [{"type": "nominal", "field": "name"}, {"type": "nominal", "field": "original"}], "x": {"type": "quantitative", "axis": {"title": "Dimension 0"}, "field": "x_axis"}, "y": {"type": "quantitative", "axis": {"title": "Dimension 1"}, "field": "y_axis"}}, "selection": {"selector002": {"type": "interval", "bind": "scales", "encodings": ["x", "y"]}}, "title": "Dimension 0 vs. Dimension 1"}, {"mark": {"type": "text", "color": "black", "dx": -15, "dy": 3}, "encoding": {"text": {"type": "nominal", "field": "original"}, "x": {"type": "quantitative", "field": "x_axis"}, "y": {"type": "quantitative", "field": "y_axis"}}}], "data": {"name": "data-79fcfbd7bcfc0fd8f2d21138ae4931c8"}, "$schema": "https://vega.github.io/schema/vega-lite/v4.8.1.json", "datasets": {"data-79fcfbd7bcfc0fd8f2d21138ae4931c8": [{"x_axis": -0.18728423118591309, "y_axis": 0.2555917203426361, "name": "community", "original": "community"}, {"x_axis": 0.32536622881889343, "y_axis": 1.721380352973938, "name": "youth", "original": "youth"}, {"x_axis": -1.810896635055542, "y_axis": -0.7288763523101807, "name": "development", "original": "development"}, {"x_axis": -1.673850178718567, "y_axis": 2.498373031616211, "name": "communities", "original": "communities"}, {"x_axis": -0.9221275448799133, "y_axis": 0.25967317819595337, "name": "culture", "original": "culture"}, {"x_axis": -0.8992059230804443, "y_axis": -1.166642189025879, "name": "forum", "original": "forum"}, {"x_axis": 0.40759706497192383, "y_axis": -1.3447256088256836, "name": "center", "original": "center"}, {"x_axis": -0.7653571367263794, "y_axis": -2.037600517272949, "name": "social", "original": "social"}, {"x_axis": -1.5766568183898926, "y_axis": 1.266507863998413, "name": "organization", "original": "organization"}, {"x_axis": -0.378949910402298, "y_axis": -0.09735140949487686, "name": "arts", "original": "arts"}, {"x_axis": -0.3277333378791809, "y_axis": -2.1531810760498047, "name": "business", "original": "business"}, {"x_axis": -1.4659302234649658, "y_axis": -1.3515280485153198, "name": "networking", "original": "networking"}, {"x_axis": 0.8056145906448364, "y_axis": -0.6950007677078247, "name": "local", "original": "local"}, {"x_axis": -0.6387972831726074, "y_axis": -1.8669778108596802, "name": "network", "original": "network"}, {"x_axis": 1.250480055809021, "y_axis": 0.6083581447601318, "name": "support", "original": "support"}, {"x_axis": -0.23286807537078857, "y_axis": -0.33710771799087524, "name": "conference", "original": "conference"}, {"x_axis": -0.5250452756881714, "y_axis": 0.6115857362747192, "name": "education", "original": "education"}, {"x_axis": 0.900570809841156, "y_axis": -0.41066834330558777, "name": "public", "original": "public"}, {"x_axis": -1.8643584251403809, "y_axis": 0.426357626914978, "name": "leadership", "original": "leadership"}, {"x_axis": 0.98122638463974, "y_axis": -0.37366732954978943, "name": "group", "original": "group"}, {"x_axis": 1.5520312786102295, "y_axis": 1.2952778339385986, "name": "students", "original": "students"}, {"x_axis": -0.73316890001297, "y_axis": 1.7661757469177246, "name": "leaders", "original": "leaders"}, {"x_axis": 0.2948177754878998, "y_axis": -1.780333161354065, "name": "service", "original": "service"}, {"x_axis": 0.09152207523584366, "y_axis": -0.6873005032539368, "name": "centre", "original": "centre"}, {"x_axis": -0.4460888206958771, "y_axis": 1.1294872760772705, "name": "council", "original": "council"}, {"x_axis": 1.5758378505706787, "y_axis": -0.5664205551147461, "name": "campus", "original": "campus"}, {"x_axis": 0.32507920265197754, "y_axis": -0.6269899010658264, "name": "building", "original": "building"}, {"x_axis": -0.9565126895904541, "y_axis": 0.8237053751945496, "name": "association", "original": "association"}, {"x_axis": -1.2301310300827026, "y_axis": -1.2385755777359009, "name": "services", "original": "services"}, {"x_axis": -2.154633045196533, "y_axis": 1.7874244451522827, "name": "outreach", "original": "outreach"}, {"x_axis": 0.13757890462875366, "y_axis": 1.0459632873535156, "name": "society", "original": "society"}, {"x_axis": 2.6733081340789795, "y_axis": -0.19304127991199493, "name": "our", "original": "our"}, {"x_axis": 0.9086370468139648, "y_axis": -0.8871814012527466, "name": "event", "original": "event"}, {"x_axis": -0.8687244057655334, "y_axis": -1.6865359544754028, "name": "client", "original": "client"}, {"x_axis": -1.755048155784607, "y_axis": 1.2506805658340454, "name": "initiative", "original": "initiative"}, {"x_axis": -0.6732537150382996, "y_axis": -1.22258460521698, "name": "workshop", "original": "workshop"}, {"x_axis": 1.415539026260376, "y_axis": 0.016912026330828667, "name": "student", "original": "student"}, {"x_axis": 3.212334394454956, "y_axis": 0.1938207745552063, "name": "family", "original": "family"}, {"x_axis": 0.4143347144126892, "y_axis": -1.1968289613723755, "name": "project", "original": "project"}, {"x_axis": -0.4262116253376007, "y_axis": -1.6869926452636719, "name": "tech", "original": "tech"}, {"x_axis": -0.0066541824489831924, "y_axis": 0.22155511379241943, "name": "health", "original": "health"}, {"x_axis": 1.3460477590560913, "y_axis": 1.541386365890503, "name": "members", "original": "members"}, {"x_axis": 0.06259714812040329, "y_axis": -1.5724512338638306, "name": "company", "original": "company"}, {"x_axis": -2.2161240577697754, "y_axis": -3.2026708126068115, "name": "marketing", "original": "marketing"}, {"x_axis": 0.1392662078142166, "y_axis": -0.2488720864057541, "name": "events", "original": "events"}, {"x_axis": 1.3276578187942505, "y_axis": -1.0227280855178833, "name": "area", "original": "area"}, {"x_axis": 1.315982699394226, "y_axis": -0.3661835193634033, "name": "meeting", "original": "meeting"}, {"x_axis": 1.1913760900497437, "y_axis": -1.5616599321365356, "name": "office", "original": "office"}, {"x_axis": -1.353521704673767, "y_axis": -2.100292682647705, "name": "management", "original": "management"}, {"x_axis": 2.0020768642425537, "y_axis": 1.1895084381103516, "name": "church", "original": "church"}, {"x_axis": 0.14369507133960724, "y_axis": 1.3639670610427856, "name": "volunteer", "original": "volunteer"}, {"x_axis": 2.2726335525512695, "y_axis": -0.7637301683425903, "name": "great", "original": "great"}, {"x_axis": 0.35769256949424744, "y_axis": -0.3991006016731262, "name": "academy", "original": "academy"}, {"x_axis": 1.5933879613876343, "y_axis": 0.001003290992230177, "name": "join", "original": "join"}, {"x_axis": -1.7039072513580322, "y_axis": -0.21113507449626923, "name": "resource", "original": "resource"}, {"x_axis": 1.175082802772522, "y_axis": 1.5075576305389404, "name": "helping", "original": "helping"}, {"x_axis": -0.7453944087028503, "y_axis": 1.0951167345046997, "name": "ministry", "original": "ministry"}, {"x_axis": -0.510957658290863, "y_axis": -2.100125551223755, "name": "media", "original": "media"}, {"x_axis": -0.6068136096000671, "y_axis": 2.163633108139038, "name": "lgbt", "original": "lgbt"}, {"x_axis": -0.8720420598983765, "y_axis": 0.036629267036914825, "name": "summit", "original": "summit"}, {"x_axis": -0.13572299480438232, "y_axis": -0.36434224247932434, "name": "based", "original": "based"}, {"x_axis": 1.521687626838684, "y_axis": -0.9359298348426819, "name": "central", "original": "central"}, {"x_axis": -1.4195530414581299, "y_axis": 0.9443653225898743, "name": "businesses", "original": "businesses"}, {"x_axis": -0.7001421451568604, "y_axis": -0.8217284083366394, "name": "coaching", "original": "coaching"}, {"x_axis": 2.24928879737854, "y_axis": 2.352874994277954, "name": "children", "original": "children"}, {"x_axis": 0.8329595923423767, "y_axis": -0.5033097863197327, "name": "staff", "original": "staff"}, {"x_axis": 0.085245281457901, "y_axis": -0.8650991916656494, "name": "program", "original": "program"}, {"x_axis": -0.7404914498329163, "y_axis": -1.0851558446884155, "name": "global", "original": "global"}, {"x_axis": -0.33388110995292664, "y_axis": 1.9403395652770996, "name": "groups", "original": "groups"}, {"x_axis": -1.9385006427764893, "y_axis": 1.5767170190811157, "name": "diversity", "original": "diversity"}, {"x_axis": 0.5154316425323486, "y_axis": 1.8772815465927124, "name": "charity", "original": "charity"}, {"x_axis": 2.5121824741363525, "y_axis": -0.5710194110870361, "name": "college", "original": "college"}, {"x_axis": 1.0969898700714111, "y_axis": -1.0730390548706055, "name": "sports", "original": "sports"}, {"x_axis": -2.772728681564331, "y_axis": 2.0099589824676514, "name": "advocacy", "original": "advocacy"}, {"x_axis": -0.24525679647922516, "y_axis": 1.2242993116378784, "name": "heritage", "original": "heritage"}, {"x_axis": -0.7224568724632263, "y_axis": -0.6419183015823364, "name": "research", "original": "research"}, {"x_axis": 0.5178780555725098, "y_axis": -0.8025647401809692, "name": "experience", "original": "experience"}, {"x_axis": 0.8277425169944763, "y_axis": 0.09806622564792633, "name": "national", "original": "national"}, {"x_axis": -0.7900134921073914, "y_axis": 0.3338368535041809, "name": "impact", "original": "impact"}, {"x_axis": -1.4162747859954834, "y_axis": 0.21774157881736755, "name": "connections", "original": "connections"}, {"x_axis": 1.033079981803894, "y_axis": 1.440591812133789, "name": "schools", "original": "schools"}, {"x_axis": 3.173941135406494, "y_axis": 1.0019937753677368, "name": "kids", "original": "kids"}, {"x_axis": -1.3703644275665283, "y_axis": -0.7449639439582825, "name": "industry", "original": "industry"}, {"x_axis": 2.1847245693206787, "y_axis": 0.3684200346469879, "name": "help", "original": "help"}, {"x_axis": -0.7520960569381714, "y_axis": 1.5503839254379272, "name": "unity", "original": "unity"}, {"x_axis": -0.6210458874702454, "y_axis": 0.15842404961585999, "name": "partners", "original": "partners"}, {"x_axis": 0.26999562978744507, "y_axis": -2.224740743637085, "name": "blog", "original": "blog"}, {"x_axis": 1.603028416633606, "y_axis": 3.388150930404663, "name": "families", "original": "families"}, {"x_axis": -1.7448781728744507, "y_axis": -0.6268057227134705, "name": "commerce", "original": "commerce"}, {"x_axis": -0.07773283123970032, "y_axis": 1.636733055114746, "name": "benefit", "original": "benefit"}, {"x_axis": -2.3451454639434814, "y_axis": 2.3699417114257812, "name": "organizations", "original": "organizations"}, {"x_axis": 1.3107482194900513, "y_axis": -0.7471078038215637, "name": "library", "original": "library"}, {"x_axis": 3.0800228118896484, "y_axis": 0.4912009835243225, "name": "people", "original": "people"}, {"x_axis": -2.599747896194458, "y_axis": 1.5069444179534912, "name": "nonprofit", "original": "nonprofit"}, {"x_axis": 0.8294682502746582, "y_axis": -0.05795503407716751, "name": "stories", "original": "stories"}, {"x_axis": -0.5874202847480774, "y_axis": -0.41429761052131653, "name": "discussion", "original": "discussion"}, {"x_axis": -0.3338536024093628, "y_axis": -0.6406794190406799, "name": "connect", "original": "connect"}, {"x_axis": -1.2770344018936157, "y_axis": -1.5517966747283936, "name": "technology", "original": "technology"}, {"x_axis": -1.1937788724899292, "y_axis": 0.6040679812431335, "name": "environment", "original": "environment"}, {"x_axis": 0.8025567531585693, "y_axis": -0.6124348044395447, "name": "host", "original": "host"}]}}, {"mode": "vega-lite"});
+</script></div></div>
+</div>
+</div>
+<div class="section" id="correlation-across-models">
+<h2>Correlation across models<a class="headerlink" href="#correlation-across-models" title="Permalink to this headline">¶</a></h2>
+<p>How similar are these two sets of embeddings for “community”? I’ll implement a method from a paper by Rodriguez and Spirling to investigate.</p>
+<p>Rodriguez and Spirling (2020 / forthcoming) investigate the correlation between nearest-neighbors rankings across models, for queries of particular words. Personally, I wasn’t completely confident I understood what they were doing from the text of the paper alone. Fortunately, Rodriguez has a GitHub repository with R implementations of some of their methods: <a class="reference external" href="https://github.com/prodriguezsosa/weeval">https://github.com/prodriguezsosa/weeval</a>. Spirling hosts the paper and an FAQ on a separate repository <a class="reference external" href="http://github.com/ArthurSpirling/EmbeddingsPaper">here</a>.</p>
+<p>These are the relevant functions:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/prodriguezsosa/weeval/blob/master/R/corr_embeds.R">https://github.com/prodriguezsosa/weeval/blob/master/R/corr_embeds.R</a></p></li>
+<li><p><a class="reference external" href="https://github.com/prodriguezsosa/weeval/blob/master/R/cue_sim.R">https://github.com/prodriguezsosa/weeval/blob/master/R/cue_sim.R</a></p></li>
+</ul>
+<p>The method is</p>
+<ol class="simple">
+<li><p>For each model, calculate a similarity measure (cosine similarity) between a single word and the entire common vocabulary.</p></li>
+<li><p>With each word in the vocabulary as a data point, calculate the correlation (Pearson or Spearman) between the two similarity measures.</p></li>
+</ol>
+<p>Their code seems like it norms the vectors too, though (as usual) it’s not clear whether that will change the final metric.</p>
+<p><code class="docutils literal notranslate"><span class="pre">EmbeddingSet.score_similar()</span></code> produces cosine distances, which are a linear transformation of cosine similarities (1 - sim), so the correlation should be identical.</p>
+<p>In the appendix of their paper, Rodriguez and Spirling use the Jaccard index as an alternative. That’s a more formal version of something I tried in my first exploration of similarity, looking at the overlap in the sets of nearest neighbors. I might return to that measure later. (Note, for Jaccard similarity it might not make sense to subset to the common vocabulary?)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># calculate similarity across entire common vocabulary</span>
+<span class="c1"># (I already subset the vocabularies above)</span>
+<span class="n">sim_wiki</span> <span class="o">=</span> <span class="n">emb_wiki_sub</span><span class="o">.</span><span class="n">score_similar</span><span class="p">(</span><span class="s2">&quot;community&quot;</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">emb_wiki_sub</span><span class="p">),</span> <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;cosine&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sim_twitter</span> <span class="o">=</span> <span class="n">emb_twitter_sub</span><span class="o">.</span><span class="n">score_similar</span><span class="p">(</span><span class="s2">&quot;community&quot;</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">emb_wiki_sub</span><span class="p">),</span> <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;cosine&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_wiki</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">sim_wiki</span><span class="p">,</span> 
+                       <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;wiki_embedding&quot;</span><span class="p">,</span> <span class="s2">&quot;wiki_cosine_distance&quot;</span><span class="p">])</span>
+<span class="n">df_twitter</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">sim_twitter</span><span class="p">,</span> 
+                          <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;twitter_embedding&quot;</span><span class="p">,</span> <span class="s2">&quot;twitter_cosine_distance&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_wiki</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">df_wiki</span><span class="p">[</span><span class="s2">&quot;wiki_embedding&quot;</span><span class="p">]]</span>
+<span class="n">df_twitter</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">df_twitter</span><span class="p">[</span><span class="s2">&quot;twitter_embedding&quot;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># join the two data frames</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df_wiki</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_twitter</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stats</span><span class="o">.</span><span class="n">pearsonr</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;wiki_cosine_distance&quot;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;twitter_cosine_distance&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.6358485733592459, 0.0)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stats</span><span class="o">.</span><span class="n">spearmanr</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;wiki_cosine_distance&quot;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;twitter_cosine_distance&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SpearmanrResult(correlation=0.5001885223836662, pvalue=0.0)
+</pre></div>
+</div>
+</div>
+</div>
+<p>0.636 is a moderately high correlation. When comparing their locally-trained models to a pretrained GloVe model, Rodriguez and Spirling generally conclude that correlations of similar magnitude are “surprisingly” high, and they conclude that the embeddings are substantively similar.</p>
+<p>It might be arguable that we should have expected the correlation to be even higher, given that these are two pretrained models using the same method and a large amount of data - albeit from quite different sources. To contextualize the correlation, I calculate correlations for other query words below.</p>
+<p>For completeness, I also visualize the cosine distances from community for the 150396 words in the common vocabulary. (0, 0) is, of course, the word “community” itself.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;darkgrid&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">rc</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;figure.dpi&quot;</span><span class="p">:</span><span class="mi">300</span><span class="p">})</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">relplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;wiki_cosine_distance&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;twitter_cosine_distance&quot;</span><span class="p">,</span>
+                <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;scatter&quot;</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Correlation between nearest neighbors for &quot;community&quot;&#39;</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Cosine distance - wikipedia GloVe vectors&quot;</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Cosine distance - twitter GloVe vectors&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/word-similarity_34_0.png" src="_images/word-similarity_34_0.png" />
+</div>
+</div>
+<p>Other words</p>
+<ul class="simple">
+<li><p><strong>Community-related words:</strong> “society”</p></li>
+<li><p><strong>Random words:</strong> “cat”, “dog”</p></li>
+<li><p><strong>Political science words:</strong> “freedom”, “democracy” (from Rodriguez and Spirling)</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compare_embedding_similarities</span><span class="p">(</span><span class="n">emb1</span><span class="p">,</span> <span class="n">emb2</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> 
+                                   <span class="n">suffixes</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">)):</span>
+    <span class="n">sim1</span> <span class="o">=</span> <span class="n">emb1</span><span class="o">.</span><span class="n">score_similar</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">emb1</span><span class="p">),</span> <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;cosine&quot;</span><span class="p">)</span>
+    <span class="n">sim2</span> <span class="o">=</span> <span class="n">emb2</span><span class="o">.</span><span class="n">score_similar</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">emb2</span><span class="p">),</span> <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;cosine&quot;</span><span class="p">)</span>
+    
+    <span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">sim1</span><span class="p">,</span> 
+                       <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;embedding&quot;</span><span class="p">,</span> <span class="s2">&quot;cosine_distance&quot;</span><span class="p">])</span>
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">sim2</span><span class="p">,</span> 
+                       <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;embedding&quot;</span><span class="p">,</span> <span class="s2">&quot;cosine_distance&quot;</span><span class="p">])</span>
+    
+    <span class="n">df1</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">df1</span><span class="p">[</span><span class="s2">&quot;embedding&quot;</span><span class="p">]]</span>
+    <span class="n">df2</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">df2</span><span class="p">[</span><span class="s2">&quot;embedding&quot;</span><span class="p">]]</span>
+    
+    <span class="n">df1</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;embedding&quot;</span><span class="p">,</span> <span class="s2">&quot;cosine_distance&quot;</span><span class="p">]]</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">suffixes</span><span class="o">=</span><span class="n">suffixes</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span>
+    
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">compare_embedding_similarities</span><span class="p">(</span><span class="n">emb_wiki_sub</span><span class="p">,</span> <span class="n">emb_twitter_sub</span><span class="p">,</span> <span class="s2">&quot;community&quot;</span><span class="p">,</span> 
+                               <span class="n">suffixes</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;_wiki&quot;</span><span class="p">,</span> <span class="s2">&quot;_twitter&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>embedding_wiki</th>
+      <th>cosine_distance_wiki</th>
+      <th>embedding_twitter</th>
+      <th>cosine_distance_twitter</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>community</td>
+      <td>community</td>
+      <td>0.000000</td>
+      <td>community</td>
+      <td>1.192093e-07</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>communities</td>
+      <td>communities</td>
+      <td>0.188388</td>
+      <td>communities</td>
+      <td>3.463842e-01</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>organizations</td>
+      <td>organizations</td>
+      <td>0.396664</td>
+      <td>organizations</td>
+      <td>4.701583e-01</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>society</td>
+      <td>society</td>
+      <td>0.405967</td>
+      <td>society</td>
+      <td>4.148523e-01</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>local</td>
+      <td>local</td>
+      <td>0.411481</td>
+      <td>local</td>
+      <td>3.800470e-01</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>150391</th>
+      <td>yae</td>
+      <td>yae</td>
+      <td>1.446393</td>
+      <td>yae</td>
+      <td>9.652307e-01</td>
+    </tr>
+    <tr>
+      <th>150392</th>
+      <td>belina</td>
+      <td>belina</td>
+      <td>1.446450</td>
+      <td>belina</td>
+      <td>1.102029e+00</td>
+    </tr>
+    <tr>
+      <th>150393</th>
+      <td>ceniceros</td>
+      <td>ceniceros</td>
+      <td>1.453716</td>
+      <td>ceniceros</td>
+      <td>1.092436e+00</td>
+    </tr>
+    <tr>
+      <th>150394</th>
+      <td>denni</td>
+      <td>denni</td>
+      <td>1.473078</td>
+      <td>denni</td>
+      <td>1.108507e+00</td>
+    </tr>
+    <tr>
+      <th>150395</th>
+      <td>_____________</td>
+      <td>_____________</td>
+      <td>1.476741</td>
+      <td>_____________</td>
+      <td>9.556857e-01</td>
+    </tr>
+  </tbody>
+</table>
+<p>150396 rows × 5 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_society</span> <span class="o">=</span> <span class="n">compare_embedding_similarities</span><span class="p">(</span><span class="n">emb_wiki_sub</span><span class="p">,</span> <span class="n">emb_twitter_sub</span><span class="p">,</span> <span class="s2">&quot;society&quot;</span><span class="p">,</span> 
+                                            <span class="n">suffixes</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;_wiki&quot;</span><span class="p">,</span> <span class="s2">&quot;_twitter&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stats</span><span class="o">.</span><span class="n">pearsonr</span><span class="p">(</span><span class="n">df_society</span><span class="p">[</span><span class="s2">&quot;cosine_distance_wiki&quot;</span><span class="p">],</span> 
+               <span class="n">df_society</span><span class="p">[</span><span class="s2">&quot;cosine_distance_twitter&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.6388758211279737, 0.0)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_freedom</span> <span class="o">=</span> <span class="n">compare_embedding_similarities</span><span class="p">(</span><span class="n">emb_wiki_sub</span><span class="p">,</span> <span class="n">emb_twitter_sub</span><span class="p">,</span> <span class="s2">&quot;freedom&quot;</span><span class="p">,</span> 
+                                            <span class="n">suffixes</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;_wiki&quot;</span><span class="p">,</span> <span class="s2">&quot;_twitter&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stats</span><span class="o">.</span><span class="n">pearsonr</span><span class="p">(</span><span class="n">df_freedom</span><span class="p">[</span><span class="s2">&quot;cosine_distance_wiki&quot;</span><span class="p">],</span> 
+               <span class="n">df_freedom</span><span class="p">[</span><span class="s2">&quot;cosine_distance_twitter&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.627512182447341, 0.0)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_democracy</span> <span class="o">=</span> <span class="n">compare_embedding_similarities</span><span class="p">(</span><span class="n">emb_wiki_sub</span><span class="p">,</span> <span class="n">emb_twitter_sub</span><span class="p">,</span> 
+                                              <span class="s2">&quot;democracy&quot;</span><span class="p">,</span> 
+                                              <span class="n">suffixes</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;_wiki&quot;</span><span class="p">,</span> <span class="s2">&quot;_twitter&quot;</span><span class="p">))</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stats</span><span class="o">.</span><span class="n">pearsonr</span><span class="p">(</span><span class="n">df_democracy</span><span class="p">[</span><span class="s2">&quot;cosine_distance_wiki&quot;</span><span class="p">],</span> 
+               <span class="n">df_democracy</span><span class="p">[</span><span class="s2">&quot;cosine_distance_twitter&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.6114448321728029, 0.0)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_cat</span> <span class="o">=</span> <span class="n">compare_embedding_similarities</span><span class="p">(</span><span class="n">emb_wiki_sub</span><span class="p">,</span> <span class="n">emb_twitter_sub</span><span class="p">,</span> 
+                                       <span class="s2">&quot;cat&quot;</span><span class="p">,</span>
+                                        <span class="n">suffixes</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;_wiki&quot;</span><span class="p">,</span> <span class="s2">&quot;_twitter&quot;</span><span class="p">))</span> 
+<span class="n">df_dog</span> <span class="o">=</span> <span class="n">compare_embedding_similarities</span><span class="p">(</span><span class="n">emb_wiki_sub</span><span class="p">,</span> <span class="n">emb_twitter_sub</span><span class="p">,</span> 
+                                       <span class="s2">&quot;dog&quot;</span><span class="p">,</span>
+                                        <span class="n">suffixes</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;_wiki&quot;</span><span class="p">,</span> <span class="s2">&quot;_twitter&quot;</span><span class="p">))</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stats</span><span class="o">.</span><span class="n">pearsonr</span><span class="p">(</span><span class="n">df_cat</span><span class="p">[</span><span class="s2">&quot;cosine_distance_wiki&quot;</span><span class="p">],</span> 
+               <span class="n">df_cat</span><span class="p">[</span><span class="s2">&quot;cosine_distance_twitter&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.5612406350431633, 0.0)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stats</span><span class="o">.</span><span class="n">pearsonr</span><span class="p">(</span><span class="n">df_dog</span><span class="p">[</span><span class="s2">&quot;cosine_distance_wiki&quot;</span><span class="p">],</span> 
+               <span class="n">df_dog</span><span class="p">[</span><span class="s2">&quot;cosine_distance_twitter&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.6200159573034019, 0.0)
+</pre></div>
+</div>
+</div>
+</div>
+<p>These correlations are all in the same range, which leads me to provisionally conclude that “community” isn’t unusually unstable or variable between these two data sources.</p>
+<p>Some of the differences between twitter and wikipedia in the nearest neighbors I visualized in the previous sections still seem like they could be substantively meaningful, but I don’t want to overinterpret those differences. There’s a common core meaning to “community” that’s being encoded in these GloVe vectors.</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="introduction.html" title="previous page">Introduction</a>
+    <a class='right-next' id="next-link" href="wmdistance.html" title="next page">Document similarity</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Connor Gilroy<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+  </body>
+</html>
