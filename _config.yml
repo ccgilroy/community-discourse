@@ -9,6 +9,9 @@ parse:
   myst_url_schemes: [mailto, http, https]
 repository:
   url: https://github.com/ccgilroy/community-discourse
+  path_to_book: "/"
+  branch: "main"
+html:
   use_repository_button: true
 sphinx:
   config: 

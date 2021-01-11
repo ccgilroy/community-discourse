@@ -10,5 +10,8 @@
 - file: binary-axes
   title: Binary axes
 
+- file: historical-change
+  title: "Historical change"
+
 - file: discussion
   title: Discussion
