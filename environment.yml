@@ -19,7 +19,9 @@ dependencies:
   - pyemd
   - nodejs
   - wikipedia
+  - myst-parser
   - pip:
     - whatlies
     - jupyter-book
+    - linkify-it-py
 prefix: /Users/cgilroy/miniconda3/envs/text-env

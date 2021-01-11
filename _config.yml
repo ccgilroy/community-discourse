@@ -1,0 +1,16 @@
+title: "Community Discourse with Word Embeddings"
+author: "Connor Gilroy"
+copyright: "2021"
+only_build_toc_files: true
+execute:
+  execute_notebooks: "off"
+parse:
+  myst_extended_syntax: true
+  myst_url_schemes: [mailto, http, https]
+repository:
+  url: https://github.com/ccgilroy/community-discourse
+  use_repository_button: true
+sphinx:
+  config: 
+    myst_enable_extensions:
+    - linkify

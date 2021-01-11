@@ -1,0 +1,14 @@
+- file: introduction
+  title: Introduction
+
+- file: word-similarity
+  title: Word similarity
+
+- file: wmdistance
+  title: Document similarity
+
+- file: binary-axes
+  title: Binary axes
+
+- file: discussion
+  title: Discussion
