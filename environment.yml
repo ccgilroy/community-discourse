@@ -3,8 +3,8 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - bs4
   - python=3.8
+  - bs4
   - scikit-learn
   - nltk
   - spacy
@@ -19,4 +19,7 @@ dependencies:
   - pyemd
   - nodejs
   - wikipedia
+  - pip:
+    - whatlies
+    - jupyter-book
 prefix: /Users/cgilroy/miniconda3/envs/text-env
