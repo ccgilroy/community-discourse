@@ -211,6 +211,84 @@
     <!-- Table of contents -->
     <div class="d-none d-md-block col-md-2 bd-toc show">
         
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#notes-on-prior-methods-code">
+   Notes on prior methods &amp; code
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#histwords-hamilton-et-al-2016">
+     HistWords (Hamilton et al 2016)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#kulkarni-et-al-2015">
+     Kulkarni et al 2015
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#kozlowski-et-al-2019">
+     Kozlowski et al 2019
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#stoltz-and-taylor-2020">
+     Stoltz and Taylor 2020
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#mendelsoh-et-al-2020">
+     Mendelsoh et al 2020
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-packages-and-embeddings">
+   Load packages and embeddings
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#words-most-similar-to-community">
+   Words most similar to community
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pairwise-cosine-similarity">
+   Pairwise cosine similarity
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#self-similarity">
+   Self-similarity
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#word-migration-with-t-sne">
+   Word migration with t-SNE
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#methods-notes">
+   Methods notes
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#matrix-alignment">
+     Matrix alignment
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+        </nav>
+        
     </div>
 </div>
     <div id="main-content" class="row">
@@ -220,7 +298,63 @@
                 
   <div class="section" id="historical-change">
 <h1>Historical change<a class="headerlink" href="#historical-change" title="Permalink to this headline">¶</a></h1>
-<p>[Under construction!]</p>
+<p>Even if the core meaning of community has not changed over the 20th century, it might have evolved new connotations or come to be used in new contexts. Here I examine the temporal stability of “community” using historical word embeddings.</p>
+<p>Both NLP researchers and social scientists have used word embeddings to study semantic change over time. To do this, distinct embeddings models are trained on different time periods, and then embeddings for particular words can be compared. (Comparing vectors <em>across</em> models is a tricky problem, see below.)</p>
+<p>For instance, the word “gay” shifted from meaning “happy” to meaning “homosexual” in the mid-late 20th century. Multiple historical embeddings papers (Kulkarni et al 2015, Hamilton et al 2016) use this example to demonstrate that embeddings can encode and uncover this kind of semantic change. Mendelsohn et al (2020) extend this work further by noting a more recent shift (since the 1980s) in the valence or connotation of the word “gay”, from more negative to more positive. I’ll use this conventional example as a comparison and reference in my explorations of “community” below.</p>
+<p>To measure and visualize semantic change over time, researchers adapt the same metrics of cosine similarity and distance used for other comparisons. First, the simplest approach is to calculate the similarity between a pair of words <em>within</em> each time period, and then to show how that similarity measure increases or decreases over time. This can be generalized to compare, for instance, binary axes across time (Kozlowski et al 2019). Second, a single word can be compared with itself <em>across</em> time periods; for instance, the distance from a word’s vector in the first time period can be calculated for each subsequent time period. Finally, distances can be projected into two-dimensions with dimensionality-reduction techniques like t-SNE, to visualize how a focal word moves in relation to other neighboring words.</p>
+<p>The most common source for historical word coocurrence data is the Google Ngram corpus (for instance, Kulkarni et al 2015, Hamilton et al 2016, Kozlowski et al 2019). An N-gram is a series of words of length N. Embeddings trained on Google Ngrams typically use 5-grams only. Because the composition of the Google Ngram corpus shifts over the 20th century and especially in the 2000s, it generally isn’t considered comparable after the 1990s (Pechenick et al 2015, note that they recommend the fiction corpus over the all-English corpus). This makes it difficult to bridge the gap with contemporary embeddings trained on Wikipedia and Twitter.</p>
+<p>Alternative data sources include the Corpus of Historical American English (COHA, used in Hamilton et al 2016 and Stoltz and Taylor 2020), and articles published in the New York Times (Mendelsohn et al 2020; Arseniev-Koehler and Foster 2020 also use a 30-year NYT corpus, but do not train separate models on different years).</p>
+<div class="section" id="notes-on-prior-methods-code">
+<h2>Notes on prior methods &amp; code<a class="headerlink" href="#notes-on-prior-methods-code" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="histwords-hamilton-et-al-2016">
+<h3>HistWords (Hamilton et al 2016)<a class="headerlink" href="#histwords-hamilton-et-al-2016" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://nlp.stanford.edu/projects/histwords/">https://nlp.stanford.edu/projects/histwords/</a></p>
+<p><a class="reference external" href="https://github.com/williamleif/histwords">https://github.com/williamleif/histwords</a></p>
+<p>I download and use these pretrained historical embeddings from Histwords. These HistWords embeddings are trained on Google N-Grams with skip-gram negative sampling / word2vec. I primarily use the all-English embeddings, but I’ve also briefly investigated the fiction embeddings. They use 10-year time periods from 1800 through 1990, inclusive.</p>
+<p>Hamilton’s research code is written in Python 2, and he recommends using gensim instead. In a previous iteration of this notebook, I was able to get some of his code, for loading the historical embeddings and calculating pairwise cosine similarities over time, to run in Python 3 with a few modifications. (I don’t recommend ad-hoc modifying code like that!)</p>
+<p>The <a class="reference external" href="https://github.com/williamleif/histwords/tree/master/viz">viz code</a>, including an interactive explorer, can be run in a separate Python 2 conda environment. As the readme notes for macOS, I had to use pythonw in place of python.</p>
+<p>To install a python 2.7 environment to run the original histwords code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">histwords</span><span class="o">-</span><span class="n">env</span> <span class="n">python</span><span class="o">=</span><span class="mf">2.7</span>
+<span class="n">conda</span> <span class="n">activate</span> <span class="n">histwords</span><span class="o">-</span><span class="n">env</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">r</span> <span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">conda</span> <span class="n">install</span> <span class="n">python</span><span class="o">.</span><span class="n">app</span>
+</pre></div>
+</div>
+<p>Then to generate plots in viz/output/:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pythonw</span> <span class="n">scripts</span><span class="o">/</span><span class="n">closest_over_time_with_anns</span><span class="o">.</span><span class="n">py</span> <span class="n">community</span>
+</pre></div>
+</div>
+<p>The static plot code is hard-coded to use the all-English embeddings.</p>
+<p>This viz code produces more detailed plots than the simplified diagrams in the actual paper. I found the code challenging to read, and I’m not certain that the t-SNE plots it produces exactly match the algorithm outlined in Appendix B of the paper. The key difference (I think!) is that the algorithm in the paper describes using one set of nearest neighbors for all years, and holds all words but the focal word fixed at the latest value when recalculating the position of the focal word. The code actually calculates a new t-SNE on all the nearest neighbors for a given year, which means that other words can move as well. If other words’ embeddings change little, results should be fairly similar.</p>
+<p>Hamilton et al’s measure of <strong>polysemy</strong> is also of interest to me, potentially for future investigation, because my intuition is that “community” is a relatively polysemous concept. They operationalize polysemy as “contextual diversity”, constructing a cooccurence network on the top 10,000 words, excluding stopwords, using PPMI. They then use a local clustering coefficient on that network, citing Watts and Strogatz.</p>
+<p>For their regression analyses, they use normalized cosine distances between time t and time t+1. This doesn’t feature in their plots of individual words.</p>
+</div>
+<div class="section" id="kulkarni-et-al-2015">
+<h3>Kulkarni et al 2015<a class="headerlink" href="#kulkarni-et-al-2015" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://github.com/viveksck/langchangetrack">https://github.com/viveksck/langchangetrack</a></p>
+<p><a class="reference external" href="https://github.com/viveksck/changepoint">https://github.com/viveksck/changepoint</a></p>
+<p>This paper precedes Hamilton et al, but I haven’t read through the code or attempted to run it. According to the paper, they align matrices by piecewise linear regression and then create a time series of distances from the original position of the word at time zero. The y-axes of their figures are those distances. The distance metric they use seems to be cosine distance as well.</p>
+</div>
+<div class="section" id="kozlowski-et-al-2019">
+<h3>Kozlowski et al 2019<a class="headerlink" href="#kozlowski-et-al-2019" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://github.com/KnowledgeLab/GeometryofCulture/">https://github.com/KnowledgeLab/GeometryofCulture/</a></p>
+<p>They plot pairwise cosine similarity over time between different binary dimensions of social class and the dimension of affluence. They repeat this plot for six other dimensions. They do this for the Google Ngram corpus in the main paper, and repeat it for the JSTOR Sociology corpus in the appendix.</p>
+<p>They also plot the correlation of the projections of vocabulary words onto each of these seven dimensions over time. This projection <a class="reference external" href="https://github.com/KnowledgeLab/GeometryofCulture/blob/master/code/build_cultural_dimensions.R#L68">is equivalent to cosine similarity</a> between the words and the dimensions. I need to read the code more closely, but this may also be akin to <a class="reference external" href="https://github.com/RasaHQ/whatlies/blob/master/whatlies/embedding.py#L132">the <code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span></code> operator in whatlies</a>.</p>
+<p>The repository includes example scripts, rather than complete replication code.</p>
+</div>
+<div class="section" id="stoltz-and-taylor-2020">
+<h3>Stoltz and Taylor 2020<a class="headerlink" href="#stoltz-and-taylor-2020" title="Permalink to this headline">¶</a></h3>
+<p>Stoltz and Taylor use pretrained HistWords embeddings. Specifically, they use the genre-balanced COHA embeddings. They plot changes in pairwise cosine similarity. They also plot cosine similarity of particular words to two binary axes simultaneously over time.</p>
+<p>This paper cites several other papers which use embeddings for comparison, some of which I’m not personally familiar with.</p>
+<p>The paper is forthcoming in Poetics. The authors generally publish their code, but this paper’s code is not yet shared on either author’s GitHub.</p>
+</div>
+<div class="section" id="mendelsoh-et-al-2020">
+<h3>Mendelsoh et al 2020<a class="headerlink" href="#mendelsoh-et-al-2020" title="Permalink to this headline">¶</a></h3>
+<p>Their code is not available, but their measures of connotations and valence seem promising.</p>
+</div>
+</div>
+<div class="section" id="load-packages-and-embeddings">
+<h2>Load packages and embeddings<a class="headerlink" href="#load-packages-and-embeddings" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load packages</span>
@@ -233,8 +367,10 @@
 
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
 <span class="kn">from</span> <span class="nn">gensim.models</span> <span class="kn">import</span> <span class="n">KeyedVectors</span>
+<span class="kn">from</span> <span class="nn">gensim.matutils</span> <span class="kn">import</span> <span class="n">unitvec</span>
 <span class="kn">from</span> <span class="nn">whatlies</span> <span class="kn">import</span> <span class="n">EmbeddingSet</span><span class="p">,</span> <span class="n">Embedding</span>
-<span class="kn">from</span> <span class="nn">whatlies.transformers</span> <span class="kn">import</span> <span class="n">Normalizer</span>
+<span class="kn">from</span> <span class="nn">whatlies.transformers</span> <span class="kn">import</span> <span class="n">Normalizer</span><span class="p">,</span> <span class="n">Tsne</span>
+<span class="kn">from</span> <span class="nn">sklearn.manifold</span> <span class="kn">import</span> <span class="n">TSNE</span>
 </pre></div>
 </div>
 </div>
@@ -253,16 +389,15 @@
     <span class="n">kv</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">entities</span><span class="o">=</span><span class="n">vocab</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">vectors</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">kv</span>
-    
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load histwords as whatlies EmbeddingSet</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># alt: load histwords as whatlies EmbeddingSet</span>
 <span class="k">def</span> <span class="nf">load_historical_embeddingset</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> 
-                               <span class="n">path</span><span class="o">=</span><span class="s2">&quot;historical-embeddings/eng-all_sgns/&quot;</span><span class="p">):</span>
+                                 <span class="n">path</span><span class="o">=</span><span class="s2">&quot;historical-embeddings/eng-all_sgns/&quot;</span><span class="p">):</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;-vocab.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">vocab</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
     
@@ -273,13 +408,673 @@
 </div>
 </div>
 </div>
+<p>The gensim syntax for calculating similarity is a bit less awkward than whatlies, and produces the same results, so I’ll use gensim here.</p>
+<p>For reference, cosine similarity is the dot product of the normed vectors. Links to code:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/williamleif/histwords/blob/master/representations/embedding.py#L76">https://github.com/williamleif/histwords/blob/master/representations/embedding.py#L76</a></p></li>
+<li><p><a class="reference external" href="https://github.com/RaRe-Technologies/gensim/blob/develop/gensim/models/keyedvectors.py#L1143">https://github.com/RaRe-Technologies/gensim/blob/develop/gensim/models/keyedvectors.py#L1143</a></p></li>
+</ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">emb_hist</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">({</span><span class="n">year</span><span class="p">:</span> <span class="n">load_historical_embeddings</span><span class="p">(</span><span class="n">year</span><span class="p">)</span> <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1900</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">10</span><span class="p">)})</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">emb_hist</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1900</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">10</span><span class="p">):</span>
+    <span class="n">emb_hist</span><span class="p">[</span><span class="n">year</span><span class="p">]</span> <span class="o">=</span> <span class="n">load_historical_embeddings</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">emb_fic</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+<span class="n">fic_path</span> <span class="o">=</span> <span class="s1">&#39;historical-embeddings/eng-fiction-all_sgns/&#39;</span>
+<span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1900</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">10</span><span class="p">):</span>
+    <span class="n">emb_fic</span><span class="p">[</span><span class="n">year</span><span class="p">]</span> <span class="o">=</span> <span class="n">load_historical_embeddings</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">fic_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="words-most-similar-to-community">
+<h2>Words most similar to community<a class="headerlink" href="#words-most-similar-to-community" title="Permalink to this headline">¶</a></h2>
+<p>For the all-English embeddings in the 1990s, these are the words most similar to “community”. (In gensim, this excludes the word “community” itself, unlike when using whatlies.)</p>
+<p>The ECSC is the European Coal and Steel Community, a predecessor to the EU.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">emb_hist</span><span class="p">[</span><span class="mi">1990</span><span class="p">]</span><span class="o">.</span><span class="n">most_similar</span><span class="p">(</span><span class="s2">&quot;community&quot;</span><span class="p">,</span> <span class="n">topn</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/cgilroy/miniconda3/envs/text-env/lib/python3.8/site-packages/gensim/models/keyedvectors.py:2389: RuntimeWarning: invalid value encountered in true_divide
+  return (m / dist).astype(REAL)
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;communities&#39;, 0.5092913508415222),
+ (&#39;family&#39;, 0.4234296679496765),
+ (&#39;welfare&#39;, 0.39216965436935425),
+ (&#39;members&#39;, 0.3888649344444275),
+ (&#39;society&#39;, 0.381721168756485),
+ (&#39;citizens&#39;, 0.3795493245124817),
+ (&#39;institutions&#39;, 0.3793562948703766),
+ (&#39;organisation&#39;, 0.37624260783195496),
+ (&#39;ecsc&#39;, 0.37549275159835815),
+ (&#39;stakeholders&#39;, 0.3671599328517914)]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hist_com10</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">emb_hist</span><span class="p">:</span>
+    <span class="n">w</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">emb_hist</span><span class="p">[</span><span class="n">year</span><span class="p">]</span><span class="o">.</span><span class="n">most_similar</span><span class="p">(</span><span class="s2">&quot;community&quot;</span><span class="p">,</span> <span class="n">topn</span><span class="o">=</span><span class="mi">20</span><span class="p">))</span>
+    <span class="n">hist_com10</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">year</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">hist_com10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+      <th>6</th>
+      <th>7</th>
+      <th>8</th>
+      <th>9</th>
+      <th>10</th>
+      <th>11</th>
+      <th>12</th>
+      <th>13</th>
+      <th>14</th>
+      <th>15</th>
+      <th>16</th>
+      <th>17</th>
+      <th>18</th>
+      <th>19</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1900</th>
+      <td>nation</td>
+      <td>communities</td>
+      <td>individual</td>
+      <td>welfare</td>
+      <td>members</td>
+      <td>country</td>
+      <td>social</td>
+      <td>interests</td>
+      <td>abiding</td>
+      <td>influential</td>
+      <td>poorer</td>
+      <td>citizens</td>
+      <td>classes</td>
+      <td>people</td>
+      <td>individuals</td>
+      <td>civilised</td>
+      <td>mankind</td>
+      <td>society</td>
+      <td>civilized</td>
+      <td>wealthy</td>
+    </tr>
+    <tr>
+      <th>1910</th>
+      <td>nation</td>
+      <td>welfare</td>
+      <td>people</td>
+      <td>interests</td>
+      <td>communities</td>
+      <td>poorer</td>
+      <td>social</td>
+      <td>citizens</td>
+      <td>upbuilding</td>
+      <td>individual</td>
+      <td>wellbeing</td>
+      <td>betterment</td>
+      <td>country</td>
+      <td>members</td>
+      <td>benefit</td>
+      <td>mankind</td>
+      <td>class</td>
+      <td>classes</td>
+      <td>family</td>
+      <td>detriment</td>
+    </tr>
+    <tr>
+      <th>1920</th>
+      <td>communities</td>
+      <td>upbuilding</td>
+      <td>nation</td>
+      <td>citizens</td>
+      <td>welfare</td>
+      <td>individual</td>
+      <td>interests</td>
+      <td>betterment</td>
+      <td>detrimental</td>
+      <td>wellbeing</td>
+      <td>civic</td>
+      <td>detriment</td>
+      <td>people</td>
+      <td>social</td>
+      <td>family</td>
+      <td>individuals</td>
+      <td>poorer</td>
+      <td>collective</td>
+      <td>civilised</td>
+      <td>citizen</td>
+    </tr>
+    <tr>
+      <th>1930</th>
+      <td>communities</td>
+      <td>citizens</td>
+      <td>family</td>
+      <td>welfare</td>
+      <td>individuals</td>
+      <td>nation</td>
+      <td>cultural</td>
+      <td>needs</td>
+      <td>jewish</td>
+      <td>social</td>
+      <td>poorer</td>
+      <td>classes</td>
+      <td>individual</td>
+      <td>residents</td>
+      <td>respected</td>
+      <td>organizations</td>
+      <td>wellbeing</td>
+      <td>groups</td>
+      <td>citizen</td>
+      <td>civilized</td>
+    </tr>
+    <tr>
+      <th>1940</th>
+      <td>nation</td>
+      <td>communities</td>
+      <td>family</td>
+      <td>welfare</td>
+      <td>residents</td>
+      <td>citizens</td>
+      <td>jewish</td>
+      <td>cultural</td>
+      <td>civic</td>
+      <td>clan</td>
+      <td>tribe</td>
+      <td>rural</td>
+      <td>members</td>
+      <td>poorer</td>
+      <td>civilized</td>
+      <td>organization</td>
+      <td>urban</td>
+      <td>people</td>
+      <td>interests</td>
+      <td>respected</td>
+    </tr>
+    <tr>
+      <th>1950</th>
+      <td>communities</td>
+      <td>welfare</td>
+      <td>family</td>
+      <td>citizens</td>
+      <td>civic</td>
+      <td>nation</td>
+      <td>residents</td>
+      <td>jewish</td>
+      <td>interests</td>
+      <td>members</td>
+      <td>individuals</td>
+      <td>social</td>
+      <td>individual</td>
+      <td>detriment</td>
+      <td>ethnic</td>
+      <td>local</td>
+      <td>organizations</td>
+      <td>groups</td>
+      <td>edc</td>
+      <td>cultural</td>
+    </tr>
+    <tr>
+      <th>1960</th>
+      <td>communities</td>
+      <td>nation</td>
+      <td>yishuv</td>
+      <td>welfare</td>
+      <td>sectors</td>
+      <td>family</td>
+      <td>undp</td>
+      <td>civic</td>
+      <td>social</td>
+      <td>organization</td>
+      <td>landowning</td>
+      <td>jewish</td>
+      <td>redevelopment</td>
+      <td>members</td>
+      <td>rural</td>
+      <td>interests</td>
+      <td>neighborhood</td>
+      <td>needs</td>
+      <td>european</td>
+      <td>solidarity</td>
+    </tr>
+    <tr>
+      <th>1970</th>
+      <td>communities</td>
+      <td>neighborhood</td>
+      <td>nation</td>
+      <td>family</td>
+      <td>group</td>
+      <td>welfare</td>
+      <td>organization</td>
+      <td>blassingame</td>
+      <td>members</td>
+      <td>hmos</td>
+      <td>jewish</td>
+      <td>wellbeing</td>
+      <td>citizens</td>
+      <td>whole</td>
+      <td>solidarity</td>
+      <td>european</td>
+      <td>ethnical</td>
+      <td>neighborhoods</td>
+      <td>unmet</td>
+      <td>civic</td>
+    </tr>
+    <tr>
+      <th>1980</th>
+      <td>communities</td>
+      <td>nation</td>
+      <td>jewish</td>
+      <td>family</td>
+      <td>institutions</td>
+      <td>believers</td>
+      <td>members</td>
+      <td>european</td>
+      <td>social</td>
+      <td>organization</td>
+      <td>health</td>
+      <td>civic</td>
+      <td>citizens</td>
+      <td>eec</td>
+      <td>church</td>
+      <td>mainstream</td>
+      <td>welfare</td>
+      <td>centers</td>
+      <td>interests</td>
+      <td>sectors</td>
+    </tr>
+    <tr>
+      <th>1990</th>
+      <td>communities</td>
+      <td>family</td>
+      <td>welfare</td>
+      <td>members</td>
+      <td>society</td>
+      <td>citizens</td>
+      <td>institutions</td>
+      <td>organisation</td>
+      <td>ecsc</td>
+      <td>stakeholders</td>
+      <td>families</td>
+      <td>civic</td>
+      <td>member</td>
+      <td>nation</td>
+      <td>elite</td>
+      <td>organization</td>
+      <td>european</td>
+      <td>believers</td>
+      <td>social</td>
+      <td>health</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fic_com10</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">emb_fic</span><span class="p">:</span>
+    <span class="n">w</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">emb_fic</span><span class="p">[</span><span class="n">year</span><span class="p">]</span><span class="o">.</span><span class="n">most_similar</span><span class="p">(</span><span class="s2">&quot;community&quot;</span><span class="p">,</span> <span class="n">topn</span><span class="o">=</span><span class="mi">20</span><span class="p">))</span>
+    <span class="n">fic_com10</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">year</span><span class="p">))</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">fic_com10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/cgilroy/miniconda3/envs/text-env/lib/python3.8/site-packages/gensim/models/keyedvectors.py:2389: RuntimeWarning: invalid value encountered in true_divide
+  return (m / dist).astype(REAL)
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+      <th>6</th>
+      <th>7</th>
+      <th>8</th>
+      <th>9</th>
+      <th>10</th>
+      <th>11</th>
+      <th>12</th>
+      <th>13</th>
+      <th>14</th>
+      <th>15</th>
+      <th>16</th>
+      <th>17</th>
+      <th>18</th>
+      <th>19</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1900</th>
+      <td>classes</td>
+      <td>citizens</td>
+      <td>welfare</td>
+      <td>interests</td>
+      <td>society</td>
+      <td>nation</td>
+      <td>people</td>
+      <td>benefit</td>
+      <td>mankind</td>
+      <td>preservation</td>
+      <td>members</td>
+      <td>class</td>
+      <td>respectable</td>
+      <td>jewish</td>
+      <td>aristocracy</td>
+      <td>lives</td>
+      <td>section</td>
+      <td>social</td>
+      <td>individual</td>
+      <td>property</td>
+    </tr>
+    <tr>
+      <th>1910</th>
+      <td>nation</td>
+      <td>interests</td>
+      <td>mankind</td>
+      <td>jewish</td>
+      <td>members</td>
+      <td>welfare</td>
+      <td>individual</td>
+      <td>population</td>
+      <td>classes</td>
+      <td>social</td>
+      <td>property</td>
+      <td>citizen</td>
+      <td>people</td>
+      <td>class</td>
+      <td>leaders</td>
+      <td>representatives</td>
+      <td>prominent</td>
+      <td>representative</td>
+      <td>prosperity</td>
+      <td>county</td>
+    </tr>
+    <tr>
+      <th>1920</th>
+      <td>welfare</td>
+      <td>classes</td>
+      <td>nation</td>
+      <td>representatives</td>
+      <td>section</td>
+      <td>lives</td>
+      <td>citizens</td>
+      <td>influential</td>
+      <td>interests</td>
+      <td>abiding</td>
+      <td>property</td>
+      <td>class</td>
+      <td>responsible</td>
+      <td>social</td>
+      <td>institutions</td>
+      <td>poorer</td>
+      <td>representative</td>
+      <td>loyal</td>
+      <td>development</td>
+      <td>moral</td>
+    </tr>
+    <tr>
+      <th>1930</th>
+      <td>interests</td>
+      <td>members</td>
+      <td>classes</td>
+      <td>society</td>
+      <td>citizens</td>
+      <td>member</td>
+      <td>welfare</td>
+      <td>nation</td>
+      <td>mankind</td>
+      <td>preservation</td>
+      <td>tribe</td>
+      <td>family</td>
+      <td>jewish</td>
+      <td>section</td>
+      <td>population</td>
+      <td>country</td>
+      <td>race</td>
+      <td>class</td>
+      <td>social</td>
+      <td>leaders</td>
+    </tr>
+    <tr>
+      <th>1940</th>
+      <td>family</td>
+      <td>interests</td>
+      <td>member</td>
+      <td>welfare</td>
+      <td>jewish</td>
+      <td>society</td>
+      <td>classes</td>
+      <td>members</td>
+      <td>nation</td>
+      <td>social</td>
+      <td>citizens</td>
+      <td>leaders</td>
+      <td>property</td>
+      <td>class</td>
+      <td>individual</td>
+      <td>culture</td>
+      <td>respectable</td>
+      <td>respected</td>
+      <td>section</td>
+      <td>preservation</td>
+    </tr>
+    <tr>
+      <th>1950</th>
+      <td>nation</td>
+      <td>welfare</td>
+      <td>members</td>
+      <td>status</td>
+      <td>member</td>
+      <td>society</td>
+      <td>social</td>
+      <td>individual</td>
+      <td>mankind</td>
+      <td>family</td>
+      <td>citizens</td>
+      <td>representatives</td>
+      <td>interests</td>
+      <td>promote</td>
+      <td>organization</td>
+      <td>people</td>
+      <td>clergy</td>
+      <td>unit</td>
+      <td>maintenance</td>
+      <td>unity</td>
+    </tr>
+    <tr>
+      <th>1960</th>
+      <td>social</td>
+      <td>integral</td>
+      <td>cultural</td>
+      <td>society</td>
+      <td>minority</td>
+      <td>culture</td>
+      <td>member</td>
+      <td>jewish</td>
+      <td>nation</td>
+      <td>residents</td>
+      <td>members</td>
+      <td>dominant</td>
+      <td>industrial</td>
+      <td>organization</td>
+      <td>population</td>
+      <td>family</td>
+      <td>citizens</td>
+      <td>status</td>
+      <td>respected</td>
+      <td>people</td>
+    </tr>
+    <tr>
+      <th>1970</th>
+      <td>society</td>
+      <td>members</td>
+      <td>individual</td>
+      <td>urban</td>
+      <td>values</td>
+      <td>preservation</td>
+      <td>social</td>
+      <td>nation</td>
+      <td>culture</td>
+      <td>jewish</td>
+      <td>family</td>
+      <td>welfare</td>
+      <td>minority</td>
+      <td>citizens</td>
+      <td>member</td>
+      <td>leadership</td>
+      <td>establishment</td>
+      <td>respected</td>
+      <td>tribe</td>
+      <td>citizen</td>
+    </tr>
+    <tr>
+      <th>1980</th>
+      <td>society</td>
+      <td>family</td>
+      <td>elite</td>
+      <td>urban</td>
+      <td>members</td>
+      <td>member</td>
+      <td>organization</td>
+      <td>stability</td>
+      <td>social</td>
+      <td>respected</td>
+      <td>hierarchy</td>
+      <td>culture</td>
+      <td>population</td>
+      <td>emergence</td>
+      <td>segment</td>
+      <td>gender</td>
+      <td>wealthiest</td>
+      <td>cult</td>
+      <td>people</td>
+      <td>citizens</td>
+    </tr>
+    <tr>
+      <th>1990</th>
+      <td>society</td>
+      <td>policing</td>
+      <td>ethnic</td>
+      <td>homophobia</td>
+      <td>transgender</td>
+      <td>panchsheel</td>
+      <td>elite</td>
+      <td>family</td>
+      <td>nation</td>
+      <td>propagation</td>
+      <td>pvt</td>
+      <td>lesbian</td>
+      <td>social</td>
+      <td>member</td>
+      <td>intellectuals</td>
+      <td>members</td>
+      <td>gay</td>
+      <td>integral</td>
+      <td>people</td>
+      <td>influential</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>For the embeddings based on English fiction, I find it intriguing that LGBT-related words begin to appear on the list in the 1990s. I’ve expanded the list of nearest neighbors to the top 20 so this is more apparent – not only “homophobia” and “transgender”, but also “lesbian” and “gay”.</p>
+<p>Note that, aside from “gay” (which exists with a non-LGBT meaning) most of these words aren’t common enough to appear in the vocabulary at all before 1970 or so. HistWords handles this by setting the vectors for those words to all 0s.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">emb_hist</span><span class="p">[</span><span class="mi">1960</span><span class="p">]</span><span class="o">.</span><span class="n">get_vector</span><span class="p">(</span><span class="s2">&quot;lesbian&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0.], dtype=float32)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">emb_fic</span><span class="p">[</span><span class="mi">1960</span><span class="p">][</span><span class="s2">&quot;lesbian&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0.], dtype=float32)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="pairwise-cosine-similarity">
+<h2>Pairwise cosine similarity<a class="headerlink" href="#pairwise-cosine-similarity" title="Permalink to this headline">¶</a></h2>
+<p>For instance, largely as a consequence of the shift in the meaning of the word “gay”, the cosine similarity between “community” and “gay” increases over the course of the 20th century. The words become more similar.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">emb_hist</span><span class="p">[</span><span class="mi">1900</span><span class="p">]</span><span class="o">.</span><span class="n">similarity</span><span class="p">(</span><span class="s2">&quot;community&quot;</span><span class="p">,</span> <span class="s2">&quot;gay&quot;</span><span class="p">)</span>
@@ -292,10 +1087,18 @@
 </div>
 </div>
 </div>
-<p>The gensim code is less awkward actually? and identical to whatlies results.</p>
-<p>They both seem to use the dot product.</p>
-<p><a class="reference external" href="https://github.com/williamleif/histwords/blob/master/representations/embedding.py#L76">https://github.com/williamleif/histwords/blob/master/representations/embedding.py#L76</a></p>
-<p><a class="reference external" href="https://github.com/RaRe-Technologies/gensim/blob/develop/gensim/models/keyedvectors.py#L1143">https://github.com/RaRe-Technologies/gensim/blob/develop/gensim/models/keyedvectors.py#L1143</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">emb_hist</span><span class="p">[</span><span class="mi">1990</span><span class="p">]</span><span class="o">.</span><span class="n">similarity</span><span class="p">(</span><span class="s2">&quot;community&quot;</span><span class="p">,</span> <span class="s2">&quot;gay&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.26311922
+</pre></div>
+</div>
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_similarity_over_time</span><span class="p">(</span><span class="n">emb_hist</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">):</span>
@@ -421,32 +1224,471 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">()</span>
-<span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df_gay</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;similarity&#39;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Cosine similarity, &quot;community&quot; &amp; &quot;gay&quot;&#39;</span><span class="p">)</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">relplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df_gay</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;similarity&#39;</span><span class="p">,</span> 
+                <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;line&quot;</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-.</span><span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="mi">55</span><span class="p">))</span>
+<span class="n">g</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Pairwise cosine similarity, &quot;community&quot; &amp; &quot;gay&quot;&#39;</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">set_figwidth</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/historical-change_9_0.png" src="_images/historical-change_9_0.png" />
+<img alt="_images/historical-change_23_0.png" src="_images/historical-change_23_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">emb_fic</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
-<span class="n">fic_path</span> <span class="o">=</span> <span class="s1">&#39;historical-embeddings/eng-fiction-all_sgns/&#39;</span>
-<span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1900</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">10</span><span class="p">):</span>
-    <span class="n">emb_fic</span><span class="p">[</span><span class="n">year</span><span class="p">]</span> <span class="o">=</span> <span class="n">load_historical_embeddings</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">fic_path</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_neighborhood</span> <span class="o">=</span> <span class="n">get_similarity_over_time</span><span class="p">(</span><span class="n">emb_hist</span><span class="p">,</span> <span class="s2">&quot;community&quot;</span><span class="p">,</span> <span class="s2">&quot;neighborhood&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">()</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">relplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df_neighborhood</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;similarity&#39;</span><span class="p">,</span> 
+                <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;line&quot;</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-.</span><span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="mi">55</span><span class="p">))</span>
+<span class="n">g</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Pairwise cosine similarity, &quot;community&quot; &amp; &quot;neighborhood&quot;&#39;</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">set_figwidth</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/historical-change_25_0.png" src="_images/historical-change_25_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_nation</span> <span class="o">=</span> <span class="n">get_similarity_over_time</span><span class="p">(</span><span class="n">emb_hist</span><span class="p">,</span> <span class="s2">&quot;community&quot;</span><span class="p">,</span> <span class="s2">&quot;nation&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">relplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df_nation</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;similarity&#39;</span><span class="p">,</span> 
+                <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;line&quot;</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Pairwise cosine similarity, &quot;community&quot; &amp; &quot;nation&quot;&#39;</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-.</span><span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="mi">55</span><span class="p">))</span>
+<span class="n">g</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">set_figwidth</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/historical-change_27_0.png" src="_images/historical-change_27_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_society</span> <span class="o">=</span> <span class="n">get_similarity_over_time</span><span class="p">(</span><span class="n">emb_hist</span><span class="p">,</span> <span class="s2">&quot;community&quot;</span><span class="p">,</span> <span class="s2">&quot;society&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">relplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df_society</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;similarity&#39;</span><span class="p">,</span> 
+                <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;line&quot;</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-.</span><span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="mi">55</span><span class="p">))</span>
+<span class="n">g</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Pairwise cosine similarity, &quot;community&quot; &amp; &quot;society&quot;&#39;</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">set_figwidth</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/historical-change_29_0.png" src="_images/historical-change_29_0.png" />
+</div>
+</div>
+<p>TODO: INTERPRET</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_gay_fic</span> <span class="o">=</span> <span class="n">get_similarity_over_time</span><span class="p">(</span><span class="n">emb_fic</span><span class="p">,</span> <span class="s2">&quot;community&quot;</span><span class="p">,</span> <span class="s2">&quot;gay&quot;</span><span class="p">)</span>
 <span class="n">df_gay_fic</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>year</th>
+      <th>similarity</th>
+      <th>word1</th>
+      <th>word2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1900</td>
+      <td>0.020447</td>
+      <td>community</td>
+      <td>gay</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1910</td>
+      <td>0.040731</td>
+      <td>community</td>
+      <td>gay</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1920</td>
+      <td>0.035118</td>
+      <td>community</td>
+      <td>gay</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1930</td>
+      <td>-0.010864</td>
+      <td>community</td>
+      <td>gay</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1940</td>
+      <td>0.035275</td>
+      <td>community</td>
+      <td>gay</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>1950</td>
+      <td>0.036227</td>
+      <td>community</td>
+      <td>gay</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>1960</td>
+      <td>0.078445</td>
+      <td>community</td>
+      <td>gay</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>1970</td>
+      <td>0.217126</td>
+      <td>community</td>
+      <td>gay</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>1980</td>
+      <td>0.246994</td>
+      <td>community</td>
+      <td>gay</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>1990</td>
+      <td>0.345665</td>
+      <td>community</td>
+      <td>gay</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="self-similarity">
+<h2>Self-similarity<a class="headerlink" href="#self-similarity" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># cosine distance from t-0</span>
+<span class="c1"># like Kulkarni et al</span>
+<span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">emb_hist</span><span class="p">:</span>
+    <span class="c1"># unitvec is in gensim.matutils</span>
+    <span class="n">cos_sim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">unitvec</span><span class="p">(</span><span class="n">emb_hist</span><span class="p">[</span><span class="mi">1900</span><span class="p">][</span><span class="s2">&quot;community&quot;</span><span class="p">]),</span> 
+                     <span class="n">unitvec</span><span class="p">(</span><span class="n">emb_hist</span><span class="p">[</span><span class="n">year</span><span class="p">][</span><span class="s2">&quot;community&quot;</span><span class="p">]))</span>
+    <span class="n">cos_dist</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">cos_sim</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">cos_dist</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1900: 0.0
+1910: 0.24373948574066162
+1920: 0.2808627486228943
+1930: 0.3072258234024048
+1940: 0.358346164226532
+1950: 0.38691627979278564
+1960: 0.41795581579208374
+1970: 0.38594627380371094
+1980: 0.43435096740722656
+1990: 0.4025806784629822
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_com0</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">emb_hist</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">])</span>
+<span class="n">cos_dist</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">emb_hist</span><span class="p">:</span>
+    <span class="c1"># unitvec is in gensim.matutils</span>
+    <span class="n">cos_sim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">unitvec</span><span class="p">(</span><span class="n">emb_hist</span><span class="p">[</span><span class="mi">1900</span><span class="p">][</span><span class="s2">&quot;community&quot;</span><span class="p">]),</span> 
+                     <span class="n">unitvec</span><span class="p">(</span><span class="n">emb_hist</span><span class="p">[</span><span class="n">year</span><span class="p">][</span><span class="s2">&quot;community&quot;</span><span class="p">]))</span>
+    <span class="n">cos_dist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">cos_sim</span><span class="p">)</span>
+<span class="n">df_com0</span><span class="p">[</span><span class="s2">&quot;distance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cos_dist</span>
+
+<span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">relplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df_com0</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;distance&#39;</span><span class="p">,</span> 
+                <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;line&quot;</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Cosine distance from t0, &quot;community&quot;&#39;</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">set_figwidth</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/historical-change_34_0.png" src="_images/historical-change_34_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_gay0</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">emb_hist</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">])</span>
+<span class="n">cos_dist</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">emb_hist</span><span class="p">:</span>
+    <span class="c1"># unitvec is in gensim.matutils</span>
+    <span class="n">cos_sim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">unitvec</span><span class="p">(</span><span class="n">emb_hist</span><span class="p">[</span><span class="mi">1900</span><span class="p">][</span><span class="s2">&quot;gay&quot;</span><span class="p">]),</span> 
+                     <span class="n">unitvec</span><span class="p">(</span><span class="n">emb_hist</span><span class="p">[</span><span class="n">year</span><span class="p">][</span><span class="s2">&quot;gay&quot;</span><span class="p">]))</span>
+    <span class="n">cos_dist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">cos_sim</span><span class="p">)</span>
+<span class="n">df_gay0</span><span class="p">[</span><span class="s2">&quot;distance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cos_dist</span>
+<span class="n">df_gay0</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>year</th>
+      <th>distance</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1900</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1910</td>
+      <td>0.303669</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1920</td>
+      <td>0.398048</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1930</td>
+      <td>0.462475</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1940</td>
+      <td>0.462247</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>1950</td>
+      <td>0.435994</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>1960</td>
+      <td>0.463119</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>1970</td>
+      <td>0.579974</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>1980</td>
+      <td>0.734762</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>1990</td>
+      <td>0.822387</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">relplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df_gay0</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;distance&#39;</span><span class="p">,</span> 
+                <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;line&quot;</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Cosine distance from t0, &quot;gay&quot;&#39;</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">set_figwidth</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/historical-change_36_0.png" src="_images/historical-change_36_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_tape0</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">emb_hist</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">])</span>
+<span class="n">cos_dist</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">emb_hist</span><span class="p">:</span>
+    <span class="c1"># unitvec is in gensim.matutils</span>
+    <span class="n">cos_sim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">unitvec</span><span class="p">(</span><span class="n">emb_hist</span><span class="p">[</span><span class="mi">1900</span><span class="p">][</span><span class="s2">&quot;tape&quot;</span><span class="p">]),</span> 
+                     <span class="n">unitvec</span><span class="p">(</span><span class="n">emb_hist</span><span class="p">[</span><span class="n">year</span><span class="p">][</span><span class="s2">&quot;tape&quot;</span><span class="p">]))</span>
+    <span class="n">cos_dist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">cos_sim</span><span class="p">)</span>
+<span class="n">df_tape0</span><span class="p">[</span><span class="s2">&quot;distance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cos_dist</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">relplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df_tape0</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;distance&#39;</span><span class="p">,</span> 
+                <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;line&quot;</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Cosine distance from t0, &quot;tape&quot;&#39;</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">set_figwidth</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/historical-change_38_0.png" src="_images/historical-change_38_0.png" />
+</div>
+</div>
+<p>In their Figure 5, Kulkarni et al use “tape” as another example of semantic change. They don’t include t0, and they use 5-year increments instead of 10-year. Still, this doesn’t seem to resemble their figure very closely, especially in terms of the large initial gap between the 1900s and 1910s.</p>
+</div>
+<div class="section" id="word-migration-with-t-sne">
+<h2>Word migration with t-SNE<a class="headerlink" href="#word-migration-with-t-sne" title="Permalink to this headline">¶</a></h2>
+<p>As outlined above, I ran the histwords viz code in a separate environment and produced two-dimensional figures illustrating the movement of focal words over time. In addition to showing the magnitude of change, but conveys some information about what that change means in terms of a word’s nearest neighbors.</p>
+<p>The word “community” changes relatively little:</p>
+<p><img alt="" src="_images/community_annotated.png" /></p>
+<p>By comparison, the word “gay” migrates dramatically:</p>
+<p><img alt="" src="_images/gay_annotated.png" /></p>
+<p>TODO: Finish writing a simple approximation of those visualizations, using either gensim or whatlies. The beginning of this code, for the 1990s only, is below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fit_tsne</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+    <span class="c1"># from histwords/viz/common.py</span>
+    <span class="n">mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">TSNE</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;pca&#39;</span><span class="p">)</span>
+    <span class="n">fitted</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">fitted</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">word_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;community&quot;</span><span class="p">]</span>
+<span class="n">w</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">emb_hist</span><span class="p">[</span><span class="mi">1990</span><span class="p">]</span><span class="o">.</span><span class="n">most_similar</span><span class="p">(</span><span class="s2">&quot;community&quot;</span><span class="p">,</span> <span class="n">topn</span><span class="o">=</span><span class="mi">99</span><span class="p">))</span>
+<span class="n">word_list</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tsne_1990</span> <span class="o">=</span> <span class="n">fit_tsne</span><span class="p">(</span><span class="n">emb_hist</span><span class="p">[</span><span class="mi">1990</span><span class="p">][</span><span class="n">word_list</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_1990</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;word&#39;</span><span class="p">:</span> <span class="n">word_list</span><span class="p">,</span> 
+                        <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">tsne_1990</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> 
+                        <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="n">tsne_1990</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+                       <span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;white&quot;</span><span class="p">)</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">relplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df_1990</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">set_axis_labels</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xticklabels</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticklabels</span><span class="o">=</span><span class="p">[],</span> <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[])</span>
+<span class="n">g</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">set_figwidth</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">set_figheight</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df_1990</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">row</span><span class="o">.</span><span class="n">word</span> <span class="o">!=</span> <span class="s1">&#39;community&#39;</span><span class="p">:</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">row</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">row</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">row</span><span class="o">.</span><span class="n">word</span><span class="p">,</span> 
+                  <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
+                  <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
+                  <span class="n">alpha</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">row</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">row</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">row</span><span class="o">.</span><span class="n">word</span><span class="p">,</span> 
+                  <span class="n">c</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span>
+                  <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
+                  <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
+                  <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> 
+                  <span class="n">size</span><span class="o">=</span><span class="s2">&quot;xx-large&quot;</span>
+                 <span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/historical-change_46_0.png" src="_images/historical-change_46_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="methods-notes">
+<h2>Methods notes<a class="headerlink" href="#methods-notes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="matrix-alignment">
+<h3>Matrix alignment<a class="headerlink" href="#matrix-alignment" title="Permalink to this headline">¶</a></h3>
+<p>To orient multiple embedding models in the same directions in multidimensional vector space, the matrices of word vectors need to be aligned with each other. This is important when calculating or plotting distance metrics showing how a single word has moved or changed between the time periods represented by different models. As I understand it, matrix alignment <em>isn’t</em> necessary for calculating and then comparing pairwise cosine similarities from each time period.</p>
+<p>Hamilton et al (2016) use <a class="reference external" href="https://en.wikipedia.org/wiki/Orthogonal_Procrustes_problem">orthogonal procrustes matrix alignment</a>, which they argue is more robust than the alignment approach in Kulkarni et al (2015).</p>
+<p><a class="reference external" href="https://gist.github.com/quadrismegistus/09a93e219a6ffc4f216fb85235535faf">This gist</a> ports to gensim two functions from Hamilton, for intersecting the vocabularies of two models and then aligning those matrices using a combination of matrix multiplication and SVD. There’s <a class="reference external" href="https://gist.github.com/tangert/106822a0f56f8308db3f1d77be2c7942">another related gist</a> which intersects the vocabularies from any number of models, but it doesn’t include the matrix algebra for actually aligning those models (despite comments to the contrary).</p>
+<p>I believe the HistWords matrices are released in their aligned versions, which means that matrix alignment is only necessary for <strong>locally trained</strong> historical embeddings models. It seems plausible to me that alignment could be used to compare distances across models differentiated by something other than time, for instance the GloVe models trained on wikipedia and twitter used in previous notebooks.</p>
+<p>Stoltz and Taylor (2020) discuss the need for alignment; Kozlowski et al (2019) do not.</p>
 </div>
 </div>
 </div>
