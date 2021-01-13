@@ -27,7 +27,7 @@ conda activate text-env
 I believe the environment.yml file will install the pip packages, but if it doesn't then install them inside the conda environment:
 
 ```
-pip install whatlies[all] jupyter-book linkify-it-py
+pip install whatlies[all] jupyter-book linkify-it-py ghp-import
 ```
 
 (whatlies is necessary for the running notebooks, but the other packages are only needed to render the Jupyter Book.)
@@ -40,11 +40,20 @@ jupyter lab
 
 Then you'll be able to open and run the notebooks from your web browser.
 
+## Render Jupyter Book 
+
+This renders the html files, then pushes them to the gh-pages branch of the GitHub repository.
+
+```
+jupyter-book build .
+ghp-import -n -p -f _build/html
+```
+
 ## Data
 
-I use gensim to programmatically download pretrained GloVe vectors; this may take time the first time you do it. Historical word vectors need to be downloaded manually.
+I use gensim to programmatically download pretrained GloVe vectors; this may take time the first time you do it. Historical word vectors need to be downloaded manually from https://nlp.stanford.edu/projects/histwords/, placed in a subdirectory (I used historical-embeddings/) and unzipped. 
 
-The wikipedia package downloads individual wikipedia pages. It's only appropriate for downloading a handful of pages at a time -- if you need more data there are better and nicer ways to get it.
+The wikipedia Python package downloads individual wikipedia pages. It's only appropriate for downloading a handful of pages at a time -- if you need more data there are better and nicer ways to get it.
 
 ## Acknowledgements
 

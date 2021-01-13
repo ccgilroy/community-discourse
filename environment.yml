@@ -24,4 +24,5 @@ dependencies:
     - whatlies
     - jupyter-book
     - linkify-it-py
+    - ghp-import
 prefix: /Users/cgilroy/miniconda3/envs/text-env
