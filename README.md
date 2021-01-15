@@ -62,3 +62,5 @@ This work wouldn't be possible without the papers and code it builds on. I've li
 Neither would this be possible without high quality packages. gensim, by Radim Řehůřek (RaRe Technologies) and whatlies by Vincent D. Warmerdam, Thomas Kober, and Rachael Tatman (Rasa) were essential, as was the PyData stack (NumPy, Pandas, Seaborn, etc). Melanie Walsh's Intro to Cultural Analytics & Python inspired me to use Jupyter Book.
 
 Kate Stovel, the UW Gender and Sexuality Graduate Research Cluster, and the CSDE Computational Demography Working Group all provided feedback on early versions of these ideas and experiments. Jeff Lockhart put up with my incessant Python-related questions.
+
+Partial support for this research came from a Shanahan Endowment Fellowship and a Eunice Kennedy Shriver National Institute of Child Health and Human Development training grant, T32 HD101442-01, to the Center for Studies in Demography & Ecology at the University of Washington.
