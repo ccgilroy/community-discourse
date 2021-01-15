@@ -1,7 +1,9 @@
 title: "Community Discourse with Word Embeddings"
-author: "Connor Gilroy"
+author: "<a href='https://students.washington.edu/cgilroy/'>Connor Gilroy</a>"
 copyright: "2021"
+logo: "img/community_projection.png"
 only_build_toc_files: true
+page_titles: toc
 execute:
   execute_notebooks: "off"
 parse:
