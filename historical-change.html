@@ -31,6 +31,7 @@
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
     <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
@@ -73,6 +74,8 @@
     
         <div class="navbar-brand-box">
 <a class="navbar-brand text-wrap" href="index.html">
+  
+  <img src="_static/community_projection.png" class="logo" alt="logo">
   
   
   <h1 class="site-logo" id="site-title">Community Discourse with Word Embeddings</h1>
@@ -364,6 +367,7 @@
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">altair</span> <span class="k">as</span> <span class="nn">alt</span>
 
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
 <span class="kn">from</span> <span class="nn">gensim.models</span> <span class="kn">import</span> <span class="n">KeyedVectors</span>
@@ -371,6 +375,30 @@
 <span class="kn">from</span> <span class="nn">whatlies</span> <span class="kn">import</span> <span class="n">EmbeddingSet</span><span class="p">,</span> <span class="n">Embedding</span>
 <span class="kn">from</span> <span class="nn">whatlies.transformers</span> <span class="kn">import</span> <span class="n">Normalizer</span><span class="p">,</span> <span class="n">Tsne</span>
 <span class="kn">from</span> <span class="nn">sklearn.manifold</span> <span class="kn">import</span> <span class="n">TSNE</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># set up figures so the resolution is sharper</span>
+<span class="c1"># borrowed from https://blakeaw.github.io/2020-05-25-improve-matplotlib-notebook-inline-res/</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">rc</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;figure.dpi&quot;</span><span class="p">:</span><span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;savefig.dpi&#39;</span><span class="p">:</span><span class="mi">300</span><span class="p">})</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s1">&#39;notebook&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;darkgrid&quot;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">set_matplotlib_formats</span>
+<span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;retina&#39;</span><span class="p">)</span>
+
+<span class="c1"># borrowed from https://github.com/altair-viz/altair/issues/1021</span>
+<span class="k">def</span> <span class="nf">my_theme</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="mi">400</span><span class="p">}</span>
+<span class="n">alt</span><span class="o">.</span><span class="n">themes</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;my-chart&#39;</span><span class="p">,</span> <span class="n">my_theme</span><span class="p">)</span>
+<span class="n">alt</span><span class="o">.</span><span class="n">themes</span><span class="o">.</span><span class="n">enable</span><span class="p">(</span><span class="s1">&#39;my-chart&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ThemeRegistry.enable(&#39;my-chart&#39;)
 </pre></div>
 </div>
 </div>
@@ -1223,8 +1251,7 @@
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">()</span>
-<span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">relplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df_gay</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;similarity&#39;</span><span class="p">,</span> 
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">relplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df_gay</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;similarity&#39;</span><span class="p">,</span> 
                 <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;line&quot;</span><span class="p">)</span>
 <span class="n">g</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-.</span><span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="mi">55</span><span class="p">))</span>
 <span class="n">g</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Pairwise cosine similarity, &quot;community&quot; &amp; &quot;gay&quot;&#39;</span><span class="p">)</span>
@@ -1234,7 +1261,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/historical-change_23_0.png" src="_images/historical-change_23_0.png" />
+<img alt="_images/historical-change_24_0.png" src="_images/historical-change_24_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1246,8 +1273,7 @@
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">()</span>
-<span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">relplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df_neighborhood</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;similarity&#39;</span><span class="p">,</span> 
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">relplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df_neighborhood</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;similarity&#39;</span><span class="p">,</span> 
                 <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;line&quot;</span><span class="p">)</span>
 <span class="n">g</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-.</span><span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="mi">55</span><span class="p">))</span>
 <span class="n">g</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Pairwise cosine similarity, &quot;community&quot; &amp; &quot;neighborhood&quot;&#39;</span><span class="p">)</span>
@@ -1257,7 +1283,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/historical-change_25_0.png" src="_images/historical-change_25_0.png" />
+<img alt="_images/historical-change_26_0.png" src="_images/historical-change_26_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1279,7 +1305,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/historical-change_27_0.png" src="_images/historical-change_27_0.png" />
+<img alt="_images/historical-change_28_0.png" src="_images/historical-change_28_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1301,10 +1327,12 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/historical-change_29_0.png" src="_images/historical-change_29_0.png" />
+<img alt="_images/historical-change_30_0.png" src="_images/historical-change_30_0.png" />
 </div>
 </div>
-<p>TODO: INTERPRET</p>
+<p>These three plots compare community with related words, and show little change over time. Broadly, it’s possible that “community” has become less similar to “nation” and more similar to “neighborhood”. There’s no trend in the similarity between “community”s and “society”.</p>
+<p>Spearman correlation (Hamilton et al 2016) or change point detection (Kulkarni et al 2015) could be used to assess the statistical significance of change.</p>
+<p>These similarity calculations can be repeated on different sets of historical embeddings:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_gay_fic</span> <span class="o">=</span> <span class="n">get_similarity_over_time</span><span class="p">(</span><span class="n">emb_fic</span><span class="p">,</span> <span class="s2">&quot;community&quot;</span><span class="p">,</span> <span class="s2">&quot;gay&quot;</span><span class="p">)</span>
@@ -1463,7 +1491,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/historical-change_34_0.png" src="_images/historical-change_34_0.png" />
+<img alt="_images/historical-change_36_0.png" src="_images/historical-change_36_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1569,7 +1597,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/historical-change_36_0.png" src="_images/historical-change_36_0.png" />
+<img alt="_images/historical-change_38_0.png" src="_images/historical-change_38_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1597,7 +1625,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/historical-change_38_0.png" src="_images/historical-change_38_0.png" />
+<img alt="_images/historical-change_40_0.png" src="_images/historical-change_40_0.png" />
 </div>
 </div>
 <p>In their Figure 5, Kulkarni et al use “tape” as another example of semantic change. They don’t include t0, and they use 5-year increments instead of 10-year. Still, this doesn’t seem to resemble their figure very closely, especially in terms of the large initial gap between the 1900s and 1910s.</p>
@@ -1676,7 +1704,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/historical-change_46_0.png" src="_images/historical-change_46_0.png" />
+<img alt="_images/historical-change_48_0.png" src="_images/historical-change_48_0.png" />
 </div>
 </div>
 </div>
@@ -1729,7 +1757,7 @@
     <div class="container">
       <p>
         
-          By Connor Gilroy<br/>
+          By <a href='https://students.washington.edu/cgilroy/'>Connor Gilroy</a><br/>
         
             &copy; Copyright 2021.<br/>
       </p>

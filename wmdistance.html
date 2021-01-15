@@ -31,6 +31,7 @@
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
     <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
@@ -73,6 +74,8 @@
     
         <div class="navbar-brand-box">
 <a class="navbar-brand text-wrap" href="index.html">
+  
+  <img src="_static/community_projection.png" class="logo" alt="logo">
   
   
   <h1 class="site-logo" id="site-title">Community Discourse with Word Embeddings</h1>
@@ -289,6 +292,19 @@
 
 <span class="kn">from</span> <span class="nn">gensim.utils</span> <span class="kn">import</span> <span class="n">simple_preprocess</span>
 <span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="kn">import</span> <span class="n">stopwords</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># set up figures so the resolution is sharper</span>
+<span class="c1"># borrowed from https://blakeaw.github.io/2020-05-25-improve-matplotlib-notebook-inline-res/</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">rc</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;figure.dpi&quot;</span><span class="p">:</span><span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;savefig.dpi&#39;</span><span class="p">:</span><span class="mi">300</span><span class="p">})</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s1">&#39;notebook&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;darkgrid&quot;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">set_matplotlib_formats</span>
+<span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;retina&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -632,7 +648,7 @@ Cleopatra&#39;s death effectively ended the final war of the Roman Republic betw
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.1155348441307014
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.1156031579375258
 </pre></div>
 </div>
 </div>
@@ -644,7 +660,7 @@ Cleopatra&#39;s death effectively ended the final war of the Roman Republic betw
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0721122719869867
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0725062404723338
 </pre></div>
 </div>
 </div>
@@ -760,7 +776,7 @@ Cleopatra&#39;s death effectively ended the final war of the Roman Republic betw
       <td>&lt;WikipediaPage 'Neighbourhood'&gt;</td>
       <td>Neighbourhood</td>
       <td>[neighbourhood, british, english, australian, ...</td>
-      <td>1.115535</td>
+      <td>1.115603</td>
     </tr>
     <tr>
       <th>1</th>
@@ -789,13 +805,10 @@ Cleopatra&#39;s death effectively ended the final war of the Roman Republic betw
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># I&#39;m still learning how to make pretty plots with seaborn and matplotlib</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">rc</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;figure.dpi&quot;</span><span class="p">:</span><span class="mi">300</span><span class="p">})</span>
-<span class="c1"># sns.set_style(&quot;whitegrid&quot;)</span>
-<span class="n">fig</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">catplot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;wmd&#39;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">d_wiki</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">catplot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;wmd&#39;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">d_wiki</span><span class="p">)</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">set_axis_labels</span><span class="p">(</span><span class="s1">&#39;Distance from &quot;community&quot; concept&#39;</span><span class="p">,</span> 
                     <span class="s1">&#39;Wikipedia article&#39;</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Word Mover&#39;s Distance&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.02</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Word Mover&#39;s Distance&quot;</span><span class="p">)</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">set_figwidth</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">set_figheight</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -803,7 +816,7 @@ Cleopatra&#39;s death effectively ended the final war of the Roman Republic betw
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/wmdistance_50_0.png" src="_images/wmdistance_50_0.png" />
+<img alt="_images/wmdistance_51_0.png" src="_images/wmdistance_51_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -877,7 +890,7 @@ Cleopatra&#39;s death effectively ended the final war of the Roman Republic betw
     <div class="container">
       <p>
         
-          By Connor Gilroy<br/>
+          By <a href='https://students.washington.edu/cgilroy/'>Connor Gilroy</a><br/>
         
             &copy; Copyright 2021.<br/>
       </p>

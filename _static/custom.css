@@ -1,0 +1,31 @@
+#main-content img {
+    width: 80%;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.cell_output .text_html {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.cell_output .vega-embed {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.cell_output .chart-wrapper {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.cell_output canvas {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
