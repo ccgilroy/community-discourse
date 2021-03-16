@@ -413,9 +413,9 @@ Twitter vocab: 1193514
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load vectors as whatlies EmbeddingSet</span>
-<span class="n">emb_wiki</span> <span class="o">=</span> <span class="n">EmbeddingSet</span><span class="o">.</span><span class="n">from_names_X</span><span class="p">(</span><span class="n">names</span><span class="o">=</span><span class="n">wv_wiki</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> 
+<span class="n">emb_wiki</span> <span class="o">=</span> <span class="n">EmbeddingSet</span><span class="o">.</span><span class="n">from_names_X</span><span class="p">(</span><span class="n">names</span><span class="o">=</span><span class="n">wv_wiki</span><span class="o">.</span><span class="n">index2word</span><span class="p">,</span> 
                                      <span class="n">X</span><span class="o">=</span><span class="n">wv_wiki</span><span class="o">.</span><span class="n">vectors</span><span class="p">)</span>
-<span class="n">emb_twitter</span> <span class="o">=</span> <span class="n">EmbeddingSet</span><span class="o">.</span><span class="n">from_names_X</span><span class="p">(</span><span class="n">names</span><span class="o">=</span><span class="n">wv_twitter</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>
+<span class="n">emb_twitter</span> <span class="o">=</span> <span class="n">EmbeddingSet</span><span class="o">.</span><span class="n">from_names_X</span><span class="p">(</span><span class="n">names</span><span class="o">=</span><span class="n">wv_twitter</span><span class="o">.</span><span class="n">index2word</span><span class="p">,</span>
                                        <span class="n">X</span> <span class="o">=</span> <span class="n">wv_twitter</span><span class="o">.</span><span class="n">vectors</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -684,12 +684,12 @@ Twitter vocab: 1193514
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html">
-<div id="altair-viz-8ba7f0d922594248a06244dd16a0a9b7"></div>
+<div id="altair-viz-059a1e48c1b542618b345eab57b479b8"></div>
 <script type="text/javascript">
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-8ba7f0d922594248a06244dd16a0a9b7") {
-      outputDiv = document.getElementById("altair-viz-8ba7f0d922594248a06244dd16a0a9b7");
+    if (outputDiv.id !== "altair-viz-059a1e48c1b542618b345eab57b479b8") {
+      outputDiv = document.getElementById("altair-viz-059a1e48c1b542618b345eab57b479b8");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -742,12 +742,12 @@ Twitter vocab: 1193514
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html">
-<div id="altair-viz-8e34c5896c074344874ef0f0b78276b5"></div>
+<div id="altair-viz-af1235b9df844d228c11f5f1e8a3357c"></div>
 <script type="text/javascript">
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-8e34c5896c074344874ef0f0b78276b5") {
-      outputDiv = document.getElementById("altair-viz-8e34c5896c074344874ef0f0b78276b5");
+    if (outputDiv.id !== "altair-viz-af1235b9df844d228c11f5f1e8a3357c") {
+      outputDiv = document.getElementById("altair-viz-af1235b9df844d228c11f5f1e8a3357c");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -859,7 +859,7 @@ Twitter vocab: 1193514
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.6358485733600227, 0.0)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.6358485733532534, 0.0)
 </pre></div>
 </div>
 </div>
@@ -1070,7 +1070,7 @@ Twitter vocab: 1193514
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.6388758211190955, 0.0)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.638875821121415, 0.0)
 </pre></div>
 </div>
 </div>
@@ -1091,7 +1091,7 @@ Twitter vocab: 1193514
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.6275121824490185, 0.0)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.6275121824489647, 0.0)
 </pre></div>
 </div>
 </div>
@@ -1113,7 +1113,7 @@ Twitter vocab: 1193514
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.6114448321619415, 0.0)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.6114448321670638, 0.0)
 </pre></div>
 </div>
 </div>
@@ -1138,7 +1138,7 @@ Twitter vocab: 1193514
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.5612406350491161, 0.0)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.5612406350377708, 0.0)
 </pre></div>
 </div>
 </div>
@@ -1151,7 +1151,7 @@ Twitter vocab: 1193514
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.6200159573097277, 0.0)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.6200159572912892, 0.0)
 </pre></div>
 </div>
 </div>
